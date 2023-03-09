@@ -15,8 +15,6 @@ k
 Qsrc/main/java/org/example/Collections/ArrayListPracticals/ArrayListPractical.java,9/1/914ab0abfcacc0f32c2e5226ce89592d67baf4c5
 „
 Tsrc/main/java/org/example/Collections/LinkedListPracticals/LinkedListPracticals.java,6/7/6729330895ff4ec2bbde6f3d7027e373ac2fe836
-u
-Esrc/main/java/org/example/ProcessBuilder/ProcessBuilderPractical.java,7/a/7a8db86ee0096d0a0ef8b895356a4fd58606ceea
 S
 #src/main/java/org/example/Ping.java,b/b/bb1d7b62e2dc20eba08006f13dcb7d62c4a3ece2
 |

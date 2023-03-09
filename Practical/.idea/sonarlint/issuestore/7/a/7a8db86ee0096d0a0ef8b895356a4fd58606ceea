@@ -1,16 +1,0 @@
-
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ü¸Èèùÿÿÿÿ
-A
-java:S1481"+Remove this unused "ipList" local variable.(¨™–‡
-Q	java:S125)"<This block of commented-out lines of code should be removed.(¯áÈ
-E
-java:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ
-V	java:S125C"<This block of commented-out lines of code should be removed.(Âé®ºúÿÿÿÿ
-N	java:S106R"9Replace this use of System.out or System.err by a logger.(ùŽÇ¤
-S	java:S106["9Replace this use of System.out or System.err by a logger.(Û‡€¿ÿÿÿÿÿ
-S	java:S106d"9Replace this use of System.out or System.err by a logger.(í£Šþøÿÿÿÿ
-N	java:S106h"9Replace this use of System.out or System.err by a logger.(‚¾¯é
-F
-java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ
-F
-java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ

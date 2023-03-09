@@ -37,5 +37,3 @@ k
 ;src/main/java/org/example/Threading/ThreadSchedulePool.java,6/7/67c22a8e39cdf9ee366a7acc0f9c9a6f7e7640a8
 l
 <src/main/java/org/example/Threading/ThreadPoolFixedSize.java,5/f/5f197c809657f864ce5b957dbe4686fdf23576e2
-u
-Esrc/main/java/org/example/ProcessBuilder/ProcessBuilderPractical.java,7/a/7a8db86ee0096d0a0ef8b895356a4fd58606ceea

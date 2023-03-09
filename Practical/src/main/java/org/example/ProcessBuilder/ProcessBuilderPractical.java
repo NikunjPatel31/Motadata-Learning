@@ -18,36 +18,40 @@ public class ProcessBuilderPractical {
     4. Store result inside bufferedReader object
     5. Store result inside Linkedlist object
      */
-    private boolean getUserInputAndCalculateOutput(StringBuilder ipInputStringBuilder) throws IOException {
-        BufferedReader fpingErrorBufferedReader = null;
+    private boolean getPingResponse(List<String> ipInputStringBuilder) throws IOException {
+        BufferedReader reader = null;
 
         Process process = null;
 
         try {
 
-            var ipList = Arrays.stream(ipInputStringBuilder.toString().split(",")).toList();
+            process = new ProcessBuilder("fping", "-q", "-c 3", ipInputStringBuilder.get(0)).start();
 
-            process = new ProcessBuilder("fping", "-q", "-c 3", ipInputStringBuilder.toString()).start();
+            reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
-            fpingErrorBufferedReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            var result = reader.readLine();
 
-            var result = new StringBuilder(fpingErrorBufferedReader.readLine())
-                    .toString()
-                    .split(":")[1]
-                    .trim();
+            if (result == null || result.isEmpty()) {
+
+                System.out.println("Unable to get device status"+result);
+
+                return false;
+
+            }
+
+            result = result.split(":")[1].trim();
 
             return result.charAt(16) == result.charAt(18) && result.charAt(20) == '0';
 
-//                System.out.println("Result: "+result);
         } catch (Exception exception) {
 
             exception.printStackTrace();
 
         } finally {
 
-            if (fpingErrorBufferedReader != null) {
+            if (reader != null) {
 
-                fpingErrorBufferedReader.close();
+                reader.close();
 
             }
 
@@ -64,28 +68,17 @@ public class ProcessBuilderPractical {
     }
 
     public static void main(String[] args) throws IOException {
-//        Process process = new ProcessBuilder("ping", "-c 3", "google.com").start();
-//
-//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-//
-//        StringBuilder sb = new StringBuilder();
-//        String tem;
-//        while ((tem = bufferedReader.readLine()) != null) {
-//            sb.append(tem);
-//            sb.append("\n");
-//        }
-//
-//        System.out.println(sb);
+
 
         var userInputBufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.println("Enter an IP Address");
 
-        var ipInputStringBuilder = new StringBuilder();
+        var builder = new StringBuilder();
 
-        ipInputStringBuilder.append(userInputBufferedReader.readLine());
+        builder.append(userInputBufferedReader.readLine());
 
-        if (ipInputStringBuilder.isEmpty()) {
+        if (builder.isEmpty()) {
 
             // userInputBufferedReader is empty
             System.out.println("IP address not stored properly");
@@ -93,15 +86,17 @@ public class ProcessBuilderPractical {
             return;
         }
 
+        var ipList = new ArrayList<>(List.of(builder.toString().split(",")));
+
         ProcessBuilderPractical processBuilderPractical = new ProcessBuilderPractical();
 
-        if (processBuilderPractical.getUserInputAndCalculateOutput(ipInputStringBuilder)) {
+        if (processBuilderPractical.getPingResponse(ipList)) {
 
-            System.out.println(ipInputStringBuilder + " -> It is reachable");
+            System.out.println(builder + " -> It is reachable");
 
         } else {
 
-            System.out.println(ipInputStringBuilder + " -> It is not reachable");
+            System.out.println(builder + " -> It is not reachable");
 
         }
     }

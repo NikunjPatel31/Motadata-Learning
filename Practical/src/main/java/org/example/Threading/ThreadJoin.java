@@ -23,7 +23,7 @@ public class ThreadJoin extends Thread {
 
         thread1.start();
 
-        thread1.join();
+        //thread1.join();
 
         thread2.start();
 

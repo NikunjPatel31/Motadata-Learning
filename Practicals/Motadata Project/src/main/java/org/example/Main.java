@@ -95,9 +95,11 @@ public class Main
 
         // Deleting all the provisioned files created
         Set<String> profiles = provisionedProfile.keySet();
+
         for (String profile : profiles)
         {
             File file = new File(profile + ext);
+
             if (!file.delete())
             {
                 allDeleted = false;
@@ -121,6 +123,7 @@ public class Main
 
             // Collecting output of ping
             String str;
+
             while ((str = readProcessOutput.readLine()) != null)
             {
                 processOutput.add(str);
@@ -151,6 +154,7 @@ public class Main
 
             // Asking for adding discovery profile to provision profile list
             System.out.println(discoveryName + "[" + ipAddress + "] : UP");
+
             System.out.print("Would you like to provision?(yes/no): ");
 
             try
@@ -158,6 +162,7 @@ public class Main
                 if (br.readLine().equals("yes"))
                 {
                     provisionedProfile.put(discoveryName, ipAddress);
+
                     System.out.println(discoveryName + "[" + ipAddress + "] added to provision list");
                 }
             }
@@ -182,6 +187,7 @@ public class Main
             {
                 // taking discovery name and ip address to discover the device
                 System.out.print("----------------------------------------------\nEnter your discovery name(should be unique): ");
+
                 String discoveryName = br.readLine();
 
                 // Flag to check if device is discovered - reachable or unreachable.
@@ -190,6 +196,7 @@ public class Main
                 if (!discoveryName.equals("") && discoverProfiles.get(discoveryName) == null)
                 {
                     String ipAddress;
+
                     while (true)
                     {
 
@@ -297,18 +304,23 @@ public class Main
                     case "0" ->
                     {
                         System.out.println("================================================");
+
                         System.out.println("Thank you for using " + PROJECT_NAME);
+
                         System.out.println(destroyDanglingFiles() ? "All resources are closed" : "Error occurred: unable to close all resources");
+
                         System.exit(0);
                     }
 
                     case "1" ->{
                         System.out.println("================================================");
+
                         discover();
                     }
 
                     case "2" ->{
                         System.out.println("================================================");
+
                         poll();
                     }
 

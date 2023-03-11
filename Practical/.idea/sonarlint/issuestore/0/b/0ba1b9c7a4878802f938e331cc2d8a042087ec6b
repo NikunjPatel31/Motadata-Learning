@@ -1,24 +1,71 @@
 
-J
-java:S3740i"/Provide the parametrized type for this generic.(ˆ™¡†øÿÿÿÿ
-J
-java:S3740i"/Provide the parametrized type for this generic.(ˆ™¡†øÿÿÿÿ
-E
-java:S3740j"/Provide the parametrized type for this generic.(ÅŠ¡æ
-E
-java:S3740j"/Provide the parametrized type for this generic.(ÅŠ¡æ
-o	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(€”°Ä
-P
-java:S1118":Add a private constructor to hide the implicit public one.(î’œœ
-S	java:S106
-"9Replace this use of System.out or System.err by a logger.(ÓÆÀúÿÿÿÿ
-N	java:S106"9Replace this use of System.out or System.err by a logger.(­ŸÅ®
-S	java:S106"9Replace this use of System.out or System.err by a logger.(æ¨¤šøÿÿÿÿ
-Q	java:S125&"<This block of commented-out lines of code should be removed.(†óšù
-V	java:S125O"<This block of commented-out lines of code should be removed.(È÷»Ïüÿÿÿÿ
-Q	java:S125T"<This block of commented-out lines of code should be removed.(½Áâ
-V	java:S125V"<This block of commented-out lines of code should be removed.(ñ¥ùšøÿÿÿÿ
-Q	java:S125\"<This block of commented-out lines of code should be removed.(ºÍ²
-S	java:S106p"9Replace this use of System.out or System.err by a logger.(ªÊñ‰şÿÿÿÿ
-K
-java:S1128"0Remove this unused import 'java.io.IOException'.(ªº»Úıÿÿÿÿ
+”
+java:S1192«"qDefine a constant instead of duplicating this literal "================================================" 3 times.(û¼Ãÿÿÿÿÿ8Äå¦äì0
+c
+java:S2184Q"FCast one of the operands of this multiplication operation to a "long".(¾‹8Èå¦äì0
+f
+java:S2095ˆ"HUse try-with-resources or close this "FileReader" in a "finally" clause.(Á¶ ‘8íæ¦äì0
+>
+java:S2189#""Add an end condition to this loop.(¤èÄ78íæ¦äì0
+?
+java:S2189¢""Add an end condition to this loop.(¤èÄ78íæ¦äì0
+{	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.( ËÆìûÿÿÿÿ8îæ¦äì0
+v	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(Œä»©8îæ¦äì0
+b
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(Œä»©8ûæ¦äì0
+O
+java:S1611("2Remove the parentheses around the "item" parameter(ğŸçÚ8şæ¦äì0
+Z	java:S106G"9Replace this use of System.out or System.err by a logger.(©üâüûÿÿÿÿ8ˆç¦äì0
+Z	java:S106J"9Replace this use of System.out or System.err by a logger.(ı¯óÛıÿÿÿÿ8‰ç¦äì0
+€
+java:S2142S"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(–ÛËçÿÿÿÿÿ8‰ç¦äì0
+U	java:S106U"9Replace this use of System.out or System.err by a logger.(Œ«éú8Šç¦äì0
+k
+java:S4042e"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(ŞÑé•8ç¦äì0
+[	java:S106„"9Replace this use of System.out or System.err by a logger.(©üâüûÿÿÿÿ8“ç¦äì0
+V	java:S106’"9Replace this use of System.out or System.err by a logger.(Ó¬ğÑ8—ç¦äì0
+[	java:S106™"9Replace this use of System.out or System.err by a logger.(¨ûúÿÿÿÿ8—ç¦äì0
+V	java:S106š"9Replace this use of System.out or System.err by a logger.(ÿÛ€8˜ç¦äì0
+V	java:S106¡"9Replace this use of System.out or System.err by a logger.(¶éÇ°8šç¦äì0
+[	java:S106¦"9Replace this use of System.out or System.err by a logger.(©üâüûÿÿÿÿ8šç¦äì0
+V	java:S106¬"9Replace this use of System.out or System.err by a logger.(¶´’«8›ç¦äì0
+p
+java:S3776±"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(ùØ‹ë8›ç¦äì0
+V	java:S106¸"9Replace this use of System.out or System.err by a logger.(åÒ´À8ç¦äì0
+[	java:S106Ä"9Replace this use of System.out or System.err by a logger.(÷ÃŒşÿÿÿÿ8Ÿç¦äì0
+^
+java:S6353"<Use concise character class syntax '\\d' instead of '[0-9]'.( ËÆìûÿÿÿÿ8µç¦äì0
+^
+java:S6353"<Use concise character class syntax '\\d' instead of '[0-9]'.( ËÆìûÿÿÿÿ8µç¦äì0
+^
+java:S6353"<Use concise character class syntax '\\d' instead of '[0-9]'.( ËÆìûÿÿÿÿ8µç¦äì0
+^
+java:S6353"<Use concise character class syntax '\\d' instead of '[0-9]'.( ËÆìûÿÿÿÿ8¶ç¦äì0
+^
+java:S6353"<Use concise character class syntax '\\d' instead of '[0-9]'.( ËÆìûÿÿÿÿ8¶ç¦äì0
+^
+java:S6353"<Use concise character class syntax '\\d' instead of '[0-9]'.( ËÆìûÿÿÿÿ8¶ç¦äì0
+^
+java:S6353"<Use concise character class syntax '\\d' instead of '[0-9]'.( ËÆìûÿÿÿÿ8¶ç¦äì0
+^
+java:S6353"<Use concise character class syntax '\\d' instead of '[0-9]'.( ËÆìûÿÿÿÿ8¶ç¦äì0
+V	java:S106Ë"9Replace this use of System.out or System.err by a logger.(ñ¦ş8·ç¦äì0
+[	java:S106Ó"9Replace this use of System.out or System.err by a logger.(Øêµ’ıÿÿÿÿ8·ç¦äì0
+V	java:S106ê"9Replace this use of System.out or System.err by a logger.(Í‰€¸8¹ç¦äì0
+[	java:S106ô"9Replace this use of System.out or System.err by a logger.(©üâüûÿÿÿÿ8¹ç¦äì0
+V	java:S106ş"9Replace this use of System.out or System.err by a logger.(‚Ü”õ8»ç¦äì0
+O
+java:S1602€",Remove useless curly braces around statement(—ÏâÍùÿÿÿÿ8»ç¦äì0
+[	java:S106"9Replace this use of System.out or System.err by a logger.(´©ç²úÿÿÿÿ8¼ç¦äì0
+V	java:S106„"9Replace this use of System.out or System.err by a logger.(äªÏ©8½ç¦äì0
+[	java:S106"9Replace this use of System.out or System.err by a logger.(ÇÃ§åşÿÿÿÿ8¾ç¦äì0
+[	java:S106”"9Replace this use of System.out or System.err by a logger.(©üâüûÿÿÿÿ8¿ç¦äì0
+[	java:S106Ÿ"9Replace this use of System.out or System.err by a logger.(çıÍ¶úÿÿÿÿ8Âç¦äì0
+V	java:S106¥"9Replace this use of System.out or System.err by a logger.(Áø˜Ã8Ãç¦äì0
+[	java:S106«"9Replace this use of System.out or System.err by a logger.(û¼Ãÿÿÿÿÿ8Çç¦äì0
+V	java:S106¬"9Replace this use of System.out or System.err by a logger.(ãøÎÔ8Èç¦äì0
+[	java:S106­"9Replace this use of System.out or System.err by a logger.(¨Ù‡´øÿÿÿÿ8Èç¦äì0
+[	java:S106²"9Replace this use of System.out or System.err by a logger.(û¼Ãÿÿÿÿÿ8Éç¦äì0
+[	java:S106·"9Replace this use of System.out or System.err by a logger.(û¼Ãÿÿÿÿÿ8Éç¦äì0
+[	java:S106»"9Replace this use of System.out or System.err by a logger.(ÿøíúÿÿÿÿ8Êç¦äì0
+V	java:S106Á"9Replace this use of System.out or System.err by a logger.(ìÏíö8Êç¦äì0

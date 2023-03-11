@@ -1,0 +1,15 @@
+
+`	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¼ÉÁşÿÿÿÿ
+W
+java:S1226"BIntroduce a new variable instead of reusing the parameter "index".(Ãìï6
+t
+java:S2142"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+S	java:S106"9Replace this use of System.out or System.err by a logger.(ßƒšöıÿÿÿÿ
+N	java:S106 "9Replace this use of System.out or System.err by a logger.(èÇË’
+V
+java:S1854*";Remove this useless assignment to local variable "service".(µÅêüúÿÿÿÿ
+S	java:S106("9Replace this use of System.out or System.err by a logger.(‡¥óèúÿÿÿÿ
+V	java:S125,"<This block of commented-out lines of code should be removed.(‹¾«Ïøÿÿÿÿ
+1
+java:S2438:""Argument 1" is a "Thread".(™í¦İ

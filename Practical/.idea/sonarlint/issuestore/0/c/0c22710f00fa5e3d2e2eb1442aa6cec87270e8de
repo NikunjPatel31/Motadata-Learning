@@ -1,0 +1,22 @@
+
+_
+java:S3014"IRemove this use of "ThreadGroup". Prefer the use of "ThreadPoolExecutor".(â»ï€
+d
+java:S3014%"IRemove this use of "ThreadGroup". Prefer the use of "ThreadPoolExecutor".(‰£ğ üÿÿÿÿ
+_
+java:S3014'"IRemove this use of "ThreadGroup". Prefer the use of "ThreadPoolExecutor".(üÄ»€
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¼ÉÁşÿÿÿÿ
+Q	java:S125"<This block of commented-out lines of code should be removed.(¯·Ä±
+S	java:S106"9Replace this use of System.out or System.err by a logger.(Ëï¹Òúÿÿÿÿ
+P
+java:S1854=":Remove this useless assignment to local variable "thread".(É“âÄ
+Z
+java:S1854'"DRemove this useless assignment to local variable "childThreadGroup".(üÄ»€
+K
+java:S1481'"5Remove this unused "childThreadGroup" local variable.(üÄ»€
+S	java:S106/"9Replace this use of System.out or System.err by a logger.(å™³Ÿûÿÿÿÿ
+N	java:S1061"9Replace this use of System.out or System.err by a logger.(¹ëì¥
+N	java:S1069"9Replace this use of System.out or System.err by a logger.(¼·…å
+N	java:S106;"9Replace this use of System.out or System.err by a logger.(ÏË´Ç
+A
+java:S1481="+Remove this unused "thread" local variable.(É“âÄ

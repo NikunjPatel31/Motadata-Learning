@@ -5,9 +5,18 @@ class CustomThread implements Runnable {
     @Override
     public void run() {
         try {
-            threadToInterrupt.interrupt();
+
+            for (int i = 0; i < 10; i++) {
+
+
+                System.out.println(Thread.currentThread().getName()+" - "+i);
+
+            }
+
         } catch (Exception exception) {
-            System.out.println(exception);
+
+            System.out.println(Thread.currentThread().getName()+" - "+exception);
+
         }
 //        try {
 //            System.out.println("Inside the run method");
@@ -20,17 +29,25 @@ class CustomThread implements Runnable {
 public class Threading {
     public static void main(String[] args) throws InterruptedException {
 
+        Thread t = Thread.currentThread();
+
+        System.out.println(t);
+
+        t.wait();
+
         CustomThread customThread = new CustomThread();
-
-        customThread.threadToInterrupt = Thread.currentThread();
-
-        System.out.println(customThread.threadToInterrupt.getName());
 
         Thread thread = new Thread(customThread);
 
         thread.start();
 
-        thread.join();
+        Thread thread1 = new Thread(thread);
+
+        thread1.start();
+
+        Thread thread2 = new Thread(thread1);
+
+        thread2.start();
 
 
 //        Thread thread = new Thread(new CustomThread());

@@ -4,19 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ProcessBuilderPractical {
 
-    /*
+    /**
     This method will ask user to enter IP address and then execute fping command using process
     builder object.
-    1. Ask user IP address
-    2. validate IP address
-    3. Create Process Builder using fping
-    4. Store result inside bufferedReader object
-    5. Store result inside Linkedlist object
+        1. Ask user IP address
+        2. validate IP address
+        3. Create Process Builder using fping
+        4. Store result inside bufferedReader object
+        5. Store result inside Linkedlist object
      */
     private boolean getPingResponse(List<String> ipInputStringBuilder) throws IOException {
         BufferedReader reader = null;

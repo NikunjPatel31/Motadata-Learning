@@ -58,6 +58,8 @@ public class ThreadGroup extends Thread {
 
         System.out.println("After start activeCountGroup(): "+threadGroup.activeGroupCount());
 
+        Thread thread = new Thread();
+
     }
 
 }

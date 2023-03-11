@@ -34,8 +34,23 @@ class MyThreadRunn implements Runnable {
 
 }
 
-public class ThreadingPractice {
+public class ThreadingPractice extends Thread {
+
+    @Override
+    public synchronized void start() {
+        System.out.println("Yash");
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Nikunj");
+    }
+
     public static void main(String[] args) {
+
+        ThreadingPractice thread = new ThreadingPractice();
+        Thread thread24 = new Thread(thread);
+        thread24.start();
 
         Thread thread1 = new Thread(new MyThreadRunn(), "Thread1");
 

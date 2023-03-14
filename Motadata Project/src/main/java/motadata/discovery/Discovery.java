@@ -3,8 +3,10 @@ package motadata.discovery;
 import motadata.CommanUtils;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -19,14 +21,12 @@ public class Discovery
         discoveryMap = new HashMap<>();
     }
 
-    public boolean isDiscoverable(String discoveryName, String IPAddress) throws Exception
+    public boolean isDiscoverable(String discoveryName, String IPAddress) throws IOException
     {
 
         if (discoveryMap.containsKey(discoveryName))
         {
             System.out.println("Please give unique name");
-
-            throw new Exception("Please give unique name");
         }
 
         discoveryMap.put(discoveryName, IPAddress);
@@ -38,7 +38,7 @@ public class Discovery
         try
         {
 
-            process = new ProcessBuilder("fping", "-q", "-c 3", IPAddress).start();
+            process = new ProcessBuilder(List.of("fping", "-q", "-c", "3", IPAddress)).start();
 
             reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 

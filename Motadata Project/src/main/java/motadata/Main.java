@@ -48,16 +48,10 @@ public class Main
 
                             discoveryName = bufferedReader.readLine();
 
-                            if (discovery.checkDiscoveryName(discoveryName))
+                            if (!discovery.checkDiscoveryName(discoveryName))
                             {
-
-                                continue;
-
-                            } else
-                            {
-
+                                System.out.println("Please enter unique name");
                                 break;
-
                             }
                         }
 

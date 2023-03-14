@@ -1,19 +1,17 @@
 package motadata.polling;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Polling
 {
-    public static Map<String, String> pollingMap = new ConcurrentHashMap<>();
+    public static Map<String, String> pollingMap = new HashMap<>();
 
     private static void poll(List<String> IPAddressList)
     {
 
-        if (IPAddressList.size() == 4) {
+        if (IPAddressList.size() == 4)
+        {
 
             return;
         }
@@ -27,12 +25,6 @@ public class Polling
 
             processBuilder = new ProcessBuilder(IPAddressList);
 
-            FileWriter file = new FileWriter("file.log", true);
-
-            file.write(IPAddressList.toString());
-
-            file.flush();
-
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
@@ -42,16 +34,13 @@ public class Polling
 
                 reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-                //var result = reader.readLine();
-
-                for (var result = reader.readLine(); result != null; result = reader.readLine()) {
+                for (var result = reader.readLine(); result != null; result = reader.readLine())
+                {
 
                     var IPAddress = result.split(":")[0];
 
                     try
                     {
-                        //System.out.println(result);
-
                         result = pollingMap.get(IPAddress.trim()) + " - " + IPAddress + result.split(":")[1]+"\n";
 
                         var fileInput = new FileWriter(pollingMap.get(IPAddress.trim())+".log", true);
@@ -62,19 +51,32 @@ public class Polling
 
                         fileInput.close();
 
-                    } catch (Exception exception) {
+                    }
+                    catch (Exception exception)
+                    {
 
                         System.out.println("Exception in polling: ");
 
                         exception.printStackTrace();
 
-                    } finally
+                    }
+                    finally
                     {
-                        file.close();
+                        if (reader != null)
+                        {
+                            reader.close();
+                        }
+
+                        if (process != null)
+                        {
+                            process.destroy();
+                        }
+
                     }
                 }
             }
-        } catch (Exception exception)
+        }
+        catch (Exception exception)
         {
 
             System.out.println("Exception Polling: " + exception);
@@ -88,7 +90,8 @@ public class Polling
         try
         {
             pollingMap.put(IPAddress, discoveryName );
-        } catch (Exception exception)
+        }
+        catch (Exception exception)
         {
             System.out.println("Exception in polling: " + exception);
         }
@@ -124,7 +127,8 @@ public class Polling
                 }
             }, 0,5000);
 
-        } catch (Exception exception)
+        }
+        catch (Exception exception)
         {
             System.out.println("Exception in polling: " + exception);
         }

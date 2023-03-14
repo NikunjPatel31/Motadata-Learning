@@ -31,7 +31,7 @@ public class Main
 
     // Backend - constant polling to provisioned profiles
     private static void startPolling()
-    {
+        {
         while (true)
         {
 

@@ -66,10 +66,49 @@ public class ProcessBuilderPractical {
 
     }
 
+    /**
+        1. take discovery name as input from the user
+        2. check if discovery name already exists or not
+            2.1 if discovery name already exists then show appropriate message and ask again
+            2.2 if discovery name is unique then go to next step
+        3. ask user IP address.
+        4. check if IP address if unique
+            4.1 if IP address is not unique show appropriate message nad ask again
+            4.2 if IP address is unique then go to next step
+        5. call getPingResponse()
+     */
+    private void discovery()
+    {
+
+    }
+
     public static void main(String[] args) throws IOException {
 
+        ProcessBuilderPractical processBuilderPractical = new ProcessBuilderPractical();
 
-        var userInputBufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        while (true)
+        {
+            System.out.println("Enter your choice: ");
+
+            System.out.println("1. Discover");
+
+            System.out.println("2. Pooling");
+
+            var buffer = new BufferedReader(new InputStreamReader(System.in));
+
+            switch (buffer.readLine())
+            {
+                case "1":
+                    // discovery
+                    processBuilderPractical.discovery();
+                    break;
+                case "2":
+                    // pooling
+                    break;
+                default:
+                    System.out.println("Sorry invalid choice");
+            }
+        }
 
         System.out.println("Enter an IP Address");
 
@@ -86,8 +125,6 @@ public class ProcessBuilderPractical {
         }
 
         var ipList = new ArrayList<>(List.of(builder.toString().split(",")));
-
-        ProcessBuilderPractical processBuilderPractical = new ProcessBuilderPractical();
 
         if (processBuilderPractical.getPingResponse(ipList)) {
 

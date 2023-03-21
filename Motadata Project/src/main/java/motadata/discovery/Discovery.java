@@ -84,7 +84,7 @@ public class Discovery
         return false;
     }
 
-    public boolean checkDiscoveryName(String discoveryName)
+    public boolean isUniqueDiscoveryName(String discoveryName)
     {
 
         return discoveryMap.containsKey(discoveryName);

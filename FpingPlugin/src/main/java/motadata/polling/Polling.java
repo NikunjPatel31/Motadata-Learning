@@ -43,7 +43,7 @@ public class Polling
 
                     try
                     {
-                        result = pollingMap.get(IPAddress.trim()) + " - " + IPAddress + result.split(":")[1]+"\n";
+                        //result = pollingMap.get(IPAddress.trim()) + " - " + IPAddress + result.split(":")[1]+"\n";
 
                         var fileInput = new FileWriter(pollingMap.get(IPAddress.trim())+".log", true);
 
@@ -51,23 +51,19 @@ public class Polling
 
                         fileInput.flush();
 
-                        fileInput.close();
+//                        fileInput.close();
 
                     }
                     catch (Exception exception)
                     {
-
-                        System.out.println("Exception in polling: ");
-
                         exception.printStackTrace();
-
                     }
                     finally
                     {
-                        if (reader != null)
-                        {
-                            reader.close();
-                        }
+//                        if (reader != null)
+//                        {
+//                            reader.close();
+//                        }
 
                         if (process != null)
                         {
@@ -82,6 +78,8 @@ public class Polling
         {
 
             System.out.println("Exception Polling: " + exception);
+
+            exception.printStackTrace();
 
         }
     }
@@ -104,30 +102,33 @@ public class Polling
     {
         try
         {
+                Timer timer = new Timer();
 
-            Timer timer = new Timer();
-
-            timer.scheduleAtFixedRate(new TimerTask()
-            {
-                @Override
-                public void run()
+                timer.scheduleAtFixedRate(new TimerTask()
                 {
+                    @Override
+                    public void run()
+                    {
 
-                    List<String> IPAddressList = new ArrayList<>();
+                        var IPlist = new ArrayList<>(pollingMap.keySet());
 
-                    IPAddressList.add("fping");
+                        for (int index = 0; index < IPlist.size(); index++)
+                        {
 
-                    IPAddressList.add("-c");
+                            List<String> IPAddressList = new ArrayList<>();
 
-                    IPAddressList.add("3");
+                            IPAddressList.add("fping");
 
-                    IPAddressList.add("-q");
+                            IPAddressList.add("-c 3");
 
-                    IPAddressList.addAll(pollingMap.keySet());
+                            IPAddressList.add(IPlist.get(index));
 
-                    poll(IPAddressList);
-                }
-            }, 0,5000);
+                            poll(IPAddressList);
+
+                        }
+
+                    }
+                }, 0,5000);
 
         }
         catch (Exception exception)

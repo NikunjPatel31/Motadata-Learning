@@ -110,7 +110,7 @@ public class ProcessBuilderPractical {
             }
         }
 
-        System.out.println("Enter an IP Address");
+        /*System.out.println("Enter an IP Address");
 
         var builder = new StringBuilder();
 
@@ -134,6 +134,6 @@ public class ProcessBuilderPractical {
 
             System.out.println(builder + " -> It is not reachable");
 
-        }
+        }*/
     }
 }

@@ -1,0 +1,12 @@
+we can use both bind and connect at both sever and client side.
+
+REQ-RES
+- send and receive method both will work
+
+PUSH-PULL
+- at PUSH side only send will work
+- at PULL side only receive will work
+
+PUB-SUB
+- subscriber needs to subscribe to topic.
+- if subscribe method is given empty parameter than it will subscribe to all topics

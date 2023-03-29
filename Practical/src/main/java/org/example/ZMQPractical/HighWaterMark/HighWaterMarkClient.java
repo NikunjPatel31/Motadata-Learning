@@ -10,7 +10,7 @@ public class HighWaterMark {
 
         try (ZContext context = new ZContext(); ZMQ.Socket socket = context.createSocket(SocketType.PULL))
         {
-            System.out.println(socket.connect("tcp://10.20.40.158:5555"));;
+            System.out.println(socket.connect("tcp://local:5555"));;
 
             while (!Thread.currentThread().isInterrupted())
             {

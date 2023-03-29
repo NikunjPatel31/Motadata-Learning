@@ -15,16 +15,21 @@ public class Client {
 
         try (ZContext context = new ZContext(); Socket socket = context.createSocket(ZMQ.PULL))
         {
-            var isConnected = socket.connect("tcp://localhost:6000");
+            var isConnected = socket.connect("tcp://10.20.40.158:9999");
 
 //            var isConnected = socket.bind("tcp://localhost:6000");
 
             if (isConnected) System.out.println("Client connected");
             else System.out.println("Client not connected");
 
-            System.out.println("Server: "+new String(socket.recv()));
+            while (!Thread.currentThread().isInterrupted())
+            {
+                System.out.println("Server: "+new String(socket.recv()));
+                Thread.sleep(10000);
+            }
 
             socket.send("This is Nikunj Patel");
+
 
         }
         catch (Exception exception)

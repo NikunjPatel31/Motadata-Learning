@@ -1,8 +1,0 @@
-
-f
-java:S1104"PMake name a static final constant or non-public and provide accessors if needed.( şÍ¾
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¨ø° ÿÿÿÿÿ
-U
-java:S2259"?A "NullPointerException" could be thrown; "c" is nullable here.(€€Ì€
-5
-java:S2097"Add a type test to this method.(ÜÑã

@@ -1,8 +1,0 @@
-
-S	java:S106"9Replace this use of System.out or System.err by a logger.(¿àÜ²ÿÿÿÿÿ
-S	java:S106"9Replace this use of System.out or System.err by a logger.(Ôûµ±ÿÿÿÿÿ
-N	java:S106"9Replace this use of System.out or System.err by a logger.(åªÏÅ
-E
-java:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ
-S	java:S1065"9Replace this use of System.out or System.err by a logger.(Â¬«›ùÿÿÿÿ
-N	java:S1067"9Replace this use of System.out or System.err by a logger.(ñÑ

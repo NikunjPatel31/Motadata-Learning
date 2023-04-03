@@ -45,3 +45,9 @@ u
 Esrc/main/java/org/example/ProcessBuilder/ProcessBuilderPractical.java,7/a/7a8db86ee0096d0a0ef8b895356a4fd58606ceea
 S
 #src/main/java/org/example/Main.java,0/b/0ba1b9c7a4878802f938e331cc2d8a042087ec6b
+t
+Dsrc/main/java/org/example/SocketProgramming/BasicSocket/Server2.java,7/b/7bbc00dfd14d60871cd5e65d0328fc3fc25041d8
+w
+Gsrc/main/java/org/example/SocketProgramming/BasicSocket/EchoServer.java,b/e/beae205f4a07404fe6618e68281715e62328fcd3
+w
+Gsrc/main/java/org/example/SocketProgramming/BasicSocket/EchoClient.java,1/c/1c871c43e8734574621d599820329829d2ffd0ef

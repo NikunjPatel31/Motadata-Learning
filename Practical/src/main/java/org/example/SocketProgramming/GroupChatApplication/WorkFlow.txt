@@ -1,0 +1,5 @@
+Steps:
+    1. Sender will send request for connection to server with its username
+    2. Server will check in hashmap if username already exists or not and then send necessary ack.
+    3. Now sender will send message with recipient username and message to server
+    4. Server will fetch socket associated with recipient username and using that socket it will send message.

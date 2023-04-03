@@ -13,7 +13,7 @@ public class EchoClient {
         try {
             socket = new Socket();
 
-            socket.connect(new InetSocketAddress("localhost", 6001));
+            socket.connect(new InetSocketAddress("localhost", 5555));
 
 
 //            socket.bind(new InetSocketAddress(5559));

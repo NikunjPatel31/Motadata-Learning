@@ -1,24 +1,0 @@
-
-E
-java:S3740"/Provide the parametrized type for this generic.(ÿŒ§è
-E
-java:S3740"/Provide the parametrized type for this generic.(ğÈã›
-I
-java:S1121".Extract the assignment out of this expression.(“û“úÿÿÿÿ
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(şƒ±Ó
-V	java:S125"<This block of commented-out lines of code should be removed.(óõ¤üÿÿÿÿ
-S	java:S106"9Replace this use of System.out or System.err by a logger.(“û“úÿÿÿÿ
-I
-java:S1905".Remove this unnecessary cast to "CustomClass".(“û“úÿÿÿÿ
-N	java:S106"9Replace this use of System.out or System.err by a logger.(„‡éÜ
-S	java:S106"9Replace this use of System.out or System.err by a logger.(×®¿¥ÿÿÿÿÿ
-Q	java:S125&"<This block of commented-out lines of code should be removed.(°‹Ñ
-N	java:S106-"9Replace this use of System.out or System.err by a logger.(ßĞÉº
-S	java:S106/"9Replace this use of System.out or System.err by a logger.(Âïü¾üÿÿÿÿ
-N	java:S1061"9Replace this use of System.out or System.err by a logger.(Û¾õË
-V	java:S1253"<This block of commented-out lines of code should be removed.(ÁèÌşÿÿÿÿ
-Q	java:S125@"<This block of commented-out lines of code should be removed.(ùäíû
-V	java:S125B"<This block of commented-out lines of code should be removed.(¿º×Üúÿÿÿÿ
-V	java:S125D"<This block of commented-out lines of code should be removed.(ãÅ¨Ÿşÿÿÿÿ
-Q	java:S125I"<This block of commented-out lines of code should be removed.(í·çÜ
-Q	java:S125N"<This block of commented-out lines of code should be removed.(­œÊ½

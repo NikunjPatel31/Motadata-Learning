@@ -15,9 +15,14 @@ public class Saving implements Account
 
     long accountID;
 
-    public Saving()
+    static
     {
         accountNumber = new AtomicLong();
+    }
+
+    public Saving()
+    {
+
     }
 
     @Override
@@ -57,9 +62,9 @@ public class Saving implements Account
     }
 
     @Override
-    public AtomicLong getAccountNumber()
+    public long getAccountNumber()
     {
-        return this.accountNumber;
+        return this.accountID;
     }
 
     private long incrementAccountIDCount()

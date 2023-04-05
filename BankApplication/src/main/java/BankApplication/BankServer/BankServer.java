@@ -27,7 +27,7 @@ public class BankServer
     {
         BankServer server = new BankServer();
 
-        try (ZContext context = new ZContext(); ZMQ.Socket socket = context.createSocket(SocketType.PAIR))
+        try (ZContext context = new ZContext(); ZMQ.Socket socket = context.createSocket(SocketType.REP))
         {
             socket.bind("tcp://*:6001");
 
@@ -57,6 +57,8 @@ public class BankServer
                                 response.put("CustomerID", customer.getCustomerID());
 
                                 response.put("Message", "Login successful");
+
+                                response.put("AccountID", customer.getAccountID());
 
                                 response.put("Status","ok");
                             }
@@ -121,15 +123,12 @@ public class BankServer
 
                         saving.setAccountID();
 
+                        server.bankDB.addAccount(saving);
+
+                        server.bankDB.getCustomer(Integer.parseInt(request.get("CustomerID").toString()))
+                                        .setAccountID(saving.getAccountNumber());
+
                         System.out.println("Account: " + saving);
-
-                        //saving.setBalance(Long.parseLong(socket.recvStr()));
-
-                        //                    saving.setCustomerID(customer.getCustomerID());
-                        //
-                        //                    saving.setAccountID();
-                        //
-                        //                    server.bankDB.addAccount(saving);
 
                         JSONObject response = new JSONObject();
 
@@ -140,6 +139,28 @@ public class BankServer
                         socket.send(response.toString());
 
                         System.out.println("Response send: " + response);
+                    }
+                        break;
+                    case "check balance":
+                    {
+                        var currentBalance = server.bankDB.getBalance(Long.parseLong(request.get("AccountID").toString()));
+
+                        JSONObject response = new JSONObject();
+
+                        if (currentBalance == -1)
+                        {
+                            // error
+                            response.put("Status", "error");
+
+                            System.out.println("AccountID: "+request.get("AccountID"));
+                        }
+                        else {
+                            response.put("Status", "ok");
+
+                            response.put("Balance", currentBalance);
+                        }
+
+                        socket.send(response.toString());
                     }
                         break;
                     default:
@@ -153,58 +174,5 @@ public class BankServer
 
             exception.printStackTrace();
         }
-    }
-
-    public boolean login()
-    {
-        System.out.println("-------------------------------------------------");
-
-        System.out.print("Email: ");
-
-
-        return false;
-    }
-
-    public boolean createAccount()
-    {
-        try
-        {
-            Customer customer = new Customer();
-
-
-            System.out.print("Name: ");
-
-            customer.setName(reader.readLine());
-
-            System.out.print("Email: ");
-
-            customer.setEmail(reader.readLine());
-
-            System.out.print("Contact: ");
-
-            customer.setContact(Long.parseLong(reader.readLine()));
-
-            System.out.print("Address: ");
-
-            customer.setAddress(reader.readLine());
-
-            System.out.print("Password: ");
-
-            customer.setPassword(reader.readLine());
-
-            bankDB.addCustomer(customer);
-
-            System.out.println("<----------------------------------------------->");
-
-            System.out.println("Select type of account");
-            return true;
-        } catch (Exception exception)
-        {
-            System.out.println("Exception: " + exception);
-
-            exception.printStackTrace();
-        }
-
-        return false;
     }
 }

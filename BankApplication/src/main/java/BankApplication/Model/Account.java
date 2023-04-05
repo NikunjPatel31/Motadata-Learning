@@ -16,5 +16,5 @@ public interface Account
 
     public long getMaxWithDrawAmount();
 
-    public AtomicLong getAccountNumber();
+    public long getAccountNumber();
 }

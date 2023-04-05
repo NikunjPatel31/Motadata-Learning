@@ -10,6 +10,8 @@ public class Customer implements Serializable
 
     int customerID;
 
+    long accountID;
+
     private long contact;
 
     static
@@ -113,6 +115,17 @@ public class Customer implements Serializable
                 "Contact: "+contact+
                 "Address: "+address+
                 "Password: "+password+
-                "CustomerID: "+customerID;
+                "CustomerID: "+customerID+
+                "AccountID: "+accountID;
+    }
+
+    public long getAccountID()
+    {
+        return accountID;
+    }
+
+    public void setAccountID(long accountID)
+    {
+        this.accountID = accountID;
     }
 }

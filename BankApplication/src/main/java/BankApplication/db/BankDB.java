@@ -11,7 +11,7 @@ public class BankDB
 {
     Map<Integer, Customer> customerMap;
 
-    Map<AtomicLong, Account> accountMap;
+    Map<Long, Account> accountMap;
 
     public BankDB()
     {
@@ -20,7 +20,7 @@ public class BankDB
         accountMap = new HashMap<>();
     }
 
-    public BankDB(Map<Integer, Customer> customerMap, Map<AtomicLong, Account> accountMap)
+    public BankDB(Map<Integer, Customer> customerMap, Map<Long, Account> accountMap)
     {
         this.customerMap = customerMap;
         this.accountMap = accountMap;
@@ -31,7 +31,7 @@ public class BankDB
         this.customerMap = customerMap;
     }
 
-    public void setAccountMap(Map<AtomicLong, Account> accountMap)
+    public void setAccountMap(Map<Long, Account> accountMap)
     {
         this.accountMap = accountMap;
     }
@@ -41,7 +41,7 @@ public class BankDB
         return customerMap;
     }
 
-    public Map<AtomicLong, Account> getAccountMap()
+    public Map<Long, Account> getAccountMap()
     {
         return accountMap;
     }
@@ -65,6 +65,23 @@ public class BankDB
     public Customer getCustomer(int customerID)
     {
         return customerMap.get(customerID);
+    }
+
+    public long getBalance(long accountID)
+    {
+        try
+        {
+            System.out.println("..............");
+            System.out.println(accountMap);
+            return accountMap.get(accountID).getBalance();
+        }
+        catch (Exception exception)
+        {
+            System.out.println("Exception->getBalance: "+exception);
+
+            exception.printStackTrace();
+        }
+        return -1;
     }
 
 }

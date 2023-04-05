@@ -22,12 +22,13 @@ public class Customer1
     public static void main(String[] args)
     {
         Customer1 customer1 = new Customer1();
-        try (ZContext context = new ZContext(); ZMQ.Socket socket = context.createSocket(SocketType.PAIR))
+        try (ZContext context = new ZContext(); ZMQ.Socket socket = context.createSocket(SocketType.REQ))
         {
             socket.connect("tcp://localhost:6001");
 
             while (true)
             {
+                long accountID = -1;
                 try
                 {
                     System.out.println("Enter a choice: ");
@@ -50,9 +51,17 @@ public class Customer1
                             // send request to server for login...
                             socket.send(request.toString());
 
+                            System.out.println("Request for login sent");
+
+                            // response for login from server...
                             JSONObject response = new JSONObject(new String(socket.recv()));
 
+                            System.out.println("Response from server");
 //                            System.out.println(response);
+
+                            int customerID = Integer.parseInt(response.get("CustomerID").toString());
+
+                            accountID = Long.parseLong(response.get("AccountID").toString());
 
                             if (response.get("Status").toString().equals("ok"))
                             {
@@ -86,6 +95,17 @@ public class Customer1
                                             break;
                                         case 3:
                                             // check balance
+
+                                            request = customer1.getBalance(accountID);
+
+                                            //send request to server...
+                                            socket.send(request.toString());
+
+                                            // response from server...
+                                            response = new JSONObject(new String(socket.recv()));
+
+                                            System.out.println("Current Balance: "+response.get("Balance"));
+
                                             break;
                                         default:
                                             System.out.println("Invalid choice ");
@@ -101,8 +121,6 @@ public class Customer1
                         break;
                         case 2:
                             // create account...
-
-                            // can we use flag here instead of message...
 
                             JSONObject customer = customer1.getUserDetails();
 
@@ -120,15 +138,15 @@ public class Customer1
 
                                 jsonObject.put("CustomerID", response.get("CustomerID"));
 
-                                // socket.send("createAccount");
-
                                 socket.send(jsonObject.toString().getBytes());
 
                                 response = new JSONObject(new String(socket.recv()));
 
+                                // we will need this accountID when will need to check for balance...
+                                accountID = Long.parseLong(response.get("AccountID").toString());
+
                                 System.out.println(response.get("Message"));
 
-                                //System.out.println(new String(socket.recv()));
                             } else
                             {
                                 // exception thrown...
@@ -164,6 +182,17 @@ public class Customer1
                                             break;
                                         case 3:
                                             // check balance
+
+                                            var request = customer1.getBalance(accountID);
+
+                                            //send request to server...
+                                            socket.send(request.toString());
+
+                                            // response from server...
+                                            var response = new JSONObject(new String(socket.recv()));
+
+                                            System.out.println("Current Balance: "+response.get("Balance"));
+
                                             break;
                                         default:
                                             System.out.println("Invalid choice ");
@@ -297,6 +326,28 @@ public class Customer1
         } catch (Exception exception)
         {
             System.out.println("Exception: " + exception);
+
+            exception.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public JSONObject getBalance(long accountID)
+    {
+        try
+        {
+            var request = new JSONObject();
+
+            request.put("Operation", "check balance");
+
+            request.put("AccountID", accountID);
+
+            return request;
+        }
+        catch (Exception exception)
+        {
+            System.out.println("Exception: "+exception);
 
             exception.printStackTrace();
         }

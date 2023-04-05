@@ -55,4 +55,16 @@ public class BankDB
     {
         accountMap.put(account.getAccountNumber(), account);
     }
+
+    public boolean checkCredential(int customerID, String password)
+    {
+        return customerMap.containsKey(customerID) &&
+                customerMap.get(customerID).getPassword().equals(password);
+    }
+
+    public Customer getCustomer(int customerID)
+    {
+        return customerMap.get(customerID);
+    }
+
 }

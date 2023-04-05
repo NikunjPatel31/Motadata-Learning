@@ -18,6 +18,7 @@ public class Customer1
     }
 
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
     public static void main(String[] args)
     {
         Customer1 customer1 = new Customer1();
@@ -43,8 +44,61 @@ public class Customer1
                     {
                         case 1:
                             // login...
-                            customer1.login();
-                            break;
+                        {
+                            JSONObject request = customer1.login();
+
+                            // send request to server for login...
+                            socket.send(request.toString());
+
+                            JSONObject response = new JSONObject(new String(socket.recv()));
+
+//                            System.out.println(response);
+
+                            if (response.get("Status").toString().equals("ok"))
+                            {
+                                System.out.println("Login successful");
+
+                                while (true)
+                                {
+                                    System.out.println("Select Operation: ");
+
+                                    System.out.println("1. Withdraw");
+
+                                    System.out.println("2. Deposit");
+
+                                    System.out.println("3. Check Balance");
+
+                                    System.out.println("4. Exit");
+
+                                    System.out.print("Choice: ");
+
+                                    int operation = Integer.parseInt(reader.readLine());
+
+                                    if (operation == 4) break;
+
+                                    switch (operation)
+                                    {
+                                        case 1:
+                                            // withdraw
+                                            break;
+                                        case 2:
+                                            // deposit
+                                            break;
+                                        case 3:
+                                            // check balance
+                                            break;
+                                        default:
+                                            System.out.println("Invalid choice ");
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                System.out.println("Login failed");
+                            }
+                        }
+
+                        break;
                         case 2:
                             // create account...
 
@@ -54,7 +108,7 @@ public class Customer1
 
                             if (customer != null)
                             {
-                                socket.send("createCustomer");
+                                // socket.send("createCustomer");
 
                                 socket.send(customer.toString());
 
@@ -66,13 +120,17 @@ public class Customer1
 
                                 jsonObject.put("CustomerID", response.get("CustomerID"));
 
-                                socket.send("createAccount");
+                                // socket.send("createAccount");
 
                                 socket.send(jsonObject.toString().getBytes());
 
+                                response = new JSONObject(new String(socket.recv()));
+
+                                System.out.println(response.get("Message"));
+
                                 //System.out.println(new String(socket.recv()));
-                            }
-                            else {
+                            } else
+                            {
                                 // exception thrown...
                             }
 
@@ -117,27 +175,49 @@ public class Customer1
                         default:
                             System.out.println("Invalid choice");
                     }
-                }
-                catch (Exception exception)
+                } catch (Exception exception)
                 {
-                    System.out.println("Exception: "+exception);
+                    System.out.println("Exception: " + exception);
 
                     exception.printStackTrace();
                 }
             }
 
-        }
-        catch (Exception exception)
+        } catch (Exception exception)
         {
-            System.out.println("Exception: "+exception);
+            System.out.println("Exception: " + exception);
 
             exception.printStackTrace();
         }
     }
 
-    public void login()
+    public JSONObject login()
     {
+        try
+        {
+            JSONObject request = new JSONObject();
 
+            {
+                System.out.print("CustomerID: ");
+
+                request.put("CustomerID", reader.readLine());
+
+                System.out.print("Password: ");
+
+                request.put("Password", reader.readLine());
+
+                request.put("Operation", "login");
+
+                return request;
+            }
+        }
+        catch (Exception exception)
+        {
+            System.out.println("Exception: " + exception);
+
+            exception.printStackTrace();
+        }
+        return null;
     }
 
     public JSONObject getUserDetails()
@@ -166,6 +246,8 @@ public class Customer1
                 System.out.print("Password: ");
 
                 jsonObject.put("Password", reader.readLine());
+
+                jsonObject.put("Operation", "createCustomer");
 
             }
             return jsonObject;
@@ -207,13 +289,14 @@ public class Customer1
 
             jsonObject.put("balance", reader.readLine());
 
+            jsonObject.put("Operation", "createAccount");
+
             return jsonObject;
 
 //            System.out.println("Select type of account");
-        }
-        catch (Exception exception)
+        } catch (Exception exception)
         {
-            System.out.println("Exception: "+exception);
+            System.out.println("Exception: " + exception);
 
             exception.printStackTrace();
         }

@@ -33,24 +33,64 @@ public class BankServer
 
             while (!Thread.currentThread().isInterrupted())
             {
-                switch (socket.recvStr())
-                {
-                    case "createCustomer":
+                //var reqStr = new String(socket.recv());
 
-                        JSONObject customerObject = new JSONObject(new String(socket.recv()));
+                JSONObject request = new JSONObject(new String(socket.recv()));
+
+                switch (request.get("Operation").toString())
+                {
+                    case "login":
+                    {
+                        JSONObject response = null;
+
+                        if (server.bankDB.checkCredential(Integer.parseInt(request.get("CustomerID").toString()),
+                                request.get("Password").toString()))
+                        {
+                            // login successfully
+
+                            response = new JSONObject();
+
+                            var customer = server.bankDB.getCustomer(Integer.parseInt(request.get("CustomerID").toString()));
+
+                            if (customer != null)
+                            {
+                                response.put("CustomerID", customer.getCustomerID());
+
+                                response.put("Message", "Login successful");
+
+                                response.put("Status","ok");
+                            }
+                            else {
+                                // error
+                                // show appropriate message
+
+                                response.put("Message", "Error in login");
+
+                                response.put("Status", "error");
+                            }
+
+                            socket.send(response.toString());
+
+                        } else
+                        {
+                            // credential are wrong
+                        }
+                    }
+                    break;
+                    case "createCustomer":
 
                         Customer customer = new Customer();
 
                     {
-                        customer.setName(customerObject.get("Name").toString());
+                        customer.setName(request.get("Name").toString());
 
-                        customer.setEmail(customerObject.get("Email").toString());
+                        customer.setEmail(request.get("Email").toString());
 
-                        customer.setContact(Long.parseLong(customerObject.get("Contact").toString()));
+                        customer.setContact(Long.parseLong(request.get("Contact").toString()));
 
-                        customer.setAddress(customerObject.get("Address").toString());
+                        customer.setAddress(request.get("Address").toString());
 
-                        customer.setPassword(customerObject.get("Password").toString());
+                        customer.setPassword(request.get("Password").toString());
 
                         customer.setCustomerID();
 
@@ -58,21 +98,19 @@ public class BankServer
 
                         server.bankDB.addCustomer(customer);
 
+                        JSONObject response = new JSONObject();
+
+                        response.put("Message", "Customer added successfully");
+
+                        response.put("CustomerID", customer.getCustomerID());
+
+                        socket.send(response.toString());
+
                     }
-
-                    JSONObject response = new JSONObject();
-
-                    response.put("Message", "Customer added successfully");
-
-                    response.put("CustomerID", customer.getCustomerID());
-
-                    socket.send(response.toString());
-
                     break;
                     case "createAccount":
 
-                        JSONObject request = new JSONObject(new String(socket.recv()).trim());
-
+                    {
                         System.out.println("Value: " + request.get("balance"));
 
                         Saving saving = new Saving();
@@ -93,7 +131,7 @@ public class BankServer
                         //
                         //                    server.bankDB.addAccount(saving);
 
-                        response = new JSONObject();
+                        JSONObject response = new JSONObject();
 
                         response.put("Message", "Account created successfully");
 
@@ -101,7 +139,8 @@ public class BankServer
 
                         socket.send(response.toString());
 
-                        System.out.println("Response send: "+response);
+                        System.out.println("Response send: " + response);
+                    }
                         break;
                     default:
                         System.out.println("Invalid request");

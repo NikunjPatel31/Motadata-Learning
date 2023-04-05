@@ -1,0 +1,14 @@
+
+{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ññ¾Àşÿÿÿÿ8¼¸³ô0
+d
+java:S2259/"GA "NullPointerException" could be thrown; "statement" is nullable here.(³úÀ‹8æ¸³ô0
+e
+java:S2259-"HA "NullPointerException" could be thrown; "connection" is nullable here.(ôêÂœ8å¸³ô0
+i
+java:S2095"GUse try-with-resources or close this "Statement" in a "finally" clause.(‡²€·ıÿÿÿÿ8æ¸³ô0
+X	java:S125"<This block of commented-out lines of code should be removed.(Š˜¾8ê¸³ô0
+F
+java:S2115")Add password protection to this database.(ªÿºÒ8ê¸³ô0
+U	java:S106"9Replace this use of System.out or System.err by a logger.(‘¤¡ƒ8ê¸³ô0
+Z	java:S106"9Replace this use of System.out or System.err by a logger.(ÀÉ¼éşÿÿÿÿ8ë¸³ô0
+U	java:S106'"9Replace this use of System.out or System.err by a logger.(ÀœëÆ8ì¸³ô0

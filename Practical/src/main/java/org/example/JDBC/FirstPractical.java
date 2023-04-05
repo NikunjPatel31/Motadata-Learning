@@ -1,9 +1,6 @@
 package org.example.JDBC;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class FirstPractical {
 
@@ -35,6 +32,7 @@ public class FirstPractical {
                             " name varchar(20));";
 
             statement.execute(query);
+
         }
         catch (Exception exception)
         {

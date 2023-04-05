@@ -22,11 +22,15 @@ public class Client {
             if (isConnected) System.out.println("Client connected");
             else System.out.println("Client not connected");
 
-            while (!Thread.currentThread().isInterrupted())
-            {
-                System.out.println("Server: "+new String(socket.recv()));
-                Thread.sleep(10000);
-            }
+            System.out.println("Server: "+new String(socket.recv()));
+
+            System.out.println("This will execute....");
+
+//            while (!Thread.currentThread().isInterrupted())
+//            {
+//                System.out.println("Server: "+new String(socket.recv()));
+//                Thread.sleep(10000);
+//            }
 
             socket.send("This is Nikunj Patel");
 

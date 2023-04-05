@@ -9,6 +9,7 @@ public class Client
     public static void main(String[] args)
     {
         try (ZContext context = new ZContext()) {
+
             System.out.println("Connecting to hello world server");
 
             //  Socket to talk to server

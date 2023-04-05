@@ -13,7 +13,9 @@ public class Subscriber {
         try (ZContext context = new ZContext();
              ZMQ.Socket socket = context.createSocket(SocketType.SUB))
         {
-            socket.connect("tcp://localhost:6000");
+            socket.bind("tcp://localhost:6000");
+
+            socket.connect("tcp://localhost:7000");
 
             System.out.println("waiting for response...");
             socket.subscribe("");

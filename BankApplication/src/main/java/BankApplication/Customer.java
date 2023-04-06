@@ -8,8 +8,9 @@ import org.zeromq.ZMQ;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.regex.Pattern;
 
-public class Customer1
+public class Customer
 {
     BankDB bankDB;
 
@@ -21,7 +22,7 @@ public class Customer1
 
     public static void main(String[] args)
     {
-        Customer1 customer1 = new Customer1();
+        Customer customer = new Customer();
         try (ZContext context = new ZContext(); ZMQ.Socket socket = context.createSocket(SocketType.REQ))
         {
             socket.connect("tcp://localhost:6001");
@@ -46,79 +47,126 @@ public class Customer1
                         case 1 ->
                         // login...
                         {
-                            JSONObject request = customer1.login();
+                            JSONObject request = customer.login();
 
                             // send request to server for login...
                             socket.send(request.toString());
 
-                            System.out.println("Request for login sent");
-
                             // response for login from server...
                             JSONObject response = new JSONObject(new String(socket.recv()));
 
-                            System.out.println("Response from server");
-//                            System.out.println(response);
-
-                            int customerID = Integer.parseInt(response.get("CustomerID").toString());
-
-                            accountID = Long.parseLong(response.get("AccountID").toString());
-
                             if (response.get("Status").toString().equals("ok"))
                             {
+                                System.out.println("-------------------------------------------------");
+
                                 System.out.println("Login successful");
 
-                                customer1.options(socket, accountID);
+                                System.out.println("-------------------------------------------------");
+
+                                accountID = Long.parseLong(response.get("AccountID").toString());
+
+                                customer.options(socket, accountID);
                             } else
                             {
-                                System.out.println("Login failed");
+                                System.out.println("*************************************************");
+
+                                System.out.println(response.get("Message"));
+
+                                System.out.println("*************************************************");
                             }
                         }
                         case 2 ->
                         {
                             // create account...
-                            JSONObject customer = customer1.getUserDetails();
-                            if (customer != null)
+                            try
                             {
-                                socket.send(customer.toString());
+                                JSONObject cus = customer.getUserDetails();
 
-                                JSONObject response = new JSONObject(new String(socket.recv()));
+                                if (cus != null)
+                                {
+                                    socket.send(cus.toString());
 
-                                System.out.println(response.get("Message"));
+                                    JSONObject response = new JSONObject(new String(socket.recv()));
 
-                                JSONObject jsonObject = customer1.getAccountDetails();
+                                    if (response.get("Status").toString().equals("ok"))
+                                    {
+                                        // new customer registered
+                                        System.out.println("-------------------------------------------------");
 
-                                jsonObject.put("CustomerID", response.get("CustomerID"));
+                                        System.out.println(response.get("Message"));
 
-                                socket.send(jsonObject.toString().getBytes());
+                                        System.out.println("Your customerID: "+response.get("CustomerID"));
 
-                                response = new JSONObject(new String(socket.recv()));
+                                        System.out.println("-------------------------------------------------");
 
-                                // we will need this accountID when will need to check for balance...
-                                accountID = Long.parseLong(response.get("AccountID").toString());
+                                        JSONObject account = customer.getAccountDetails();
 
-                                System.out.println(response.get("Message"));
+                                        account.put("CustomerID", response.get("CustomerID"));
 
-                                customer1.options(socket, accountID);
+                                        account.put("Operation", "createAccount");
 
-                            } else
+                                        // sending account details for opening new account...
+                                        socket.send(account.toString().getBytes());
+
+                                        // response from server regarding creating of new account
+                                        response = new JSONObject(new String(socket.recv()));
+
+                                        if (response.get("Status").toString().equals("ok"))
+                                        {
+                                            // we will need this accountID when will need to check for balance...
+                                            accountID = Long.parseLong(response.get("AccountID").toString());
+
+                                            System.out.println("-------------------------------------------------");
+
+                                            System.out.println(response.get("Message"));
+
+                                            System.out.println("Your accountID: "+response.get("AccountID"));
+
+                                            System.out.println("-------------------------------------------------");
+
+                                            // show options...
+                                            customer.options(socket, accountID);
+                                        }
+                                        else
+                                        {
+                                            System.out.println("*************************************************");
+
+                                            System.out.println(response.get("Message"));
+
+                                            System.out.println("*************************************************");
+                                        }
+                                    } else
+                                    {
+                                        // error in creating new customer
+                                        System.out.println("*************************************************");
+
+                                        System.out.println(response.get("Message"));
+
+                                        System.out.println("*************************************************");
+                                    }
+
+                                } else
+                                {
+                                    // exception thrown...
+
+                                    System.out.println("Error...");
+                                }
+                            }
+                            catch (Exception exception)
                             {
-                                // exception thrown...
+                                exception.printStackTrace();
                             }
                         }
                         default -> System.out.println("Invalid choice");
                     }
                 } catch (Exception exception)
                 {
-                    System.out.println("Exception: " + exception);
-
                     exception.printStackTrace();
                 }
             }
 
         } catch (Exception exception)
         {
-            System.out.println("Exception: " + exception);
-
             exception.printStackTrace();
         }
     }
@@ -145,8 +193,6 @@ public class Customer1
         }
         catch (Exception exception)
         {
-            System.out.println("Exception: " + exception);
-
             exception.printStackTrace();
         }
         return null;
@@ -161,48 +207,60 @@ public class Customer1
             {
                 System.out.print("Name: ");
 
-                jsonObject.put("Name", reader.readLine());
+                String value = "";
+
+                while ((value = reader.readLine()).isBlank())
+                {
+                    System.out.print("Please enter proper name: ");
+                }
+
+                jsonObject.put("Name", value);
 
                 System.out.print("Email: ");
 
-                jsonObject.put("Email", reader.readLine());
+                while ((value = reader.readLine()).isBlank())
+                {
+                    System.out.print("Please enter proper email: ");
+                }
+
+                jsonObject.put("Email", value);
 
                 System.out.print("Contact: ");
 
-                jsonObject.put("Contact", reader.readLine());
+                while ((value = reader.readLine()).isBlank()
+                        || !Pattern.matches("\\d{10}", value))
+                {
+                    System.out.print("Please enter proper contact: ");
+                }
+
+                jsonObject.put("Contact", value);
 
                 System.out.print("Address: ");
 
-                jsonObject.put("Address", reader.readLine());
+                while ((value = reader.readLine()).isBlank())
+                {
+                    System.out.print("Please enter proper address: ");
+                }
+
+                jsonObject.put("Address", value);
 
                 System.out.print("Password: ");
 
-                jsonObject.put("Password", reader.readLine());
+                while ((value = reader.readLine()).isBlank()
+                        || !Pattern.matches("[0-9a-zA-Z@#$%]{8,}", value))
+                {
+                    System.out.print("Please enter proper password: ");
+                }
+
+                jsonObject.put("Password", value);
 
                 jsonObject.put("Operation", "createCustomer");
 
             }
             return jsonObject;
 
-            /*
-            System.out.println("<----------------------------------------------->");
-
-            System.out.print("Enter initial balance: ");
-
-            Saving account = new Saving();
-
-            account.setBalance(Long.parseLong(reader.readLine()));
-
-            account.setCustomerID(customer.getCustomerID());
-
-            account.setAccountID();*/
-
-//            System.out.println("Select type of account");
-
         } catch (Exception exception)
         {
-            System.out.println("Exception: " + exception);
-
             exception.printStackTrace();
         }
 
@@ -213,8 +271,6 @@ public class Customer1
     {
         try
         {
-            System.out.println("-------------------------------------------------");
-
             System.out.print("Enter initial balance: ");
 
             JSONObject jsonObject = new JSONObject();
@@ -225,11 +281,8 @@ public class Customer1
 
             return jsonObject;
 
-//            System.out.println("Select type of account");
         } catch (Exception exception)
         {
-            System.out.println("Exception: " + exception);
-
             exception.printStackTrace();
         }
 
@@ -247,11 +300,8 @@ public class Customer1
             request.put("AccountID", accountID);
 
             return request;
-        }
-        catch (Exception exception)
+        } catch (Exception exception)
         {
-            System.out.println("Exception: "+exception);
-
             exception.printStackTrace();
         }
 
@@ -284,107 +334,183 @@ public class Customer1
 
                 switch (operation)
                 {
-                    case 1:
-                        // withdraw
+                    case 1 ->
+                    // withdraw
                     {
-                        var request = new JSONObject();
-
-                        System.out.print("Enter amount: ");
-
-                        request.put("Operation", "withdraw");
-
-                        request.put("Amount", reader.readLine());
-
-                        request.put("AccountID", accountID);
-
-                        // send request...
-                        socket.send(request.toString());
-
-                        // response from server
-                        var response = new JSONObject(new String(socket.recv()));
-
-                        if (response.get("Status").toString().equals("ok"))
+                        try
                         {
+                            var request = new JSONObject();
+
+                            System.out.print("Enter amount: ");
+
+                            request.put("Operation", "withdraw");
+
+                            var value = "";
+                            while ((value = reader.readLine()).isBlank()
+                                    || !Pattern.matches("\\d+",value))
+                            {
+                                System.out.print("Please enter proper amount: ");
+                            }
+
+                            request.put("Amount", value);
+
+                            request.put("AccountID", accountID);
+
+                            // send request...
+                            socket.send(request.toString());
+
+                            // response from server
+                            var response = new JSONObject(new String(socket.recv()));
+
+                            if (response.get("Status").toString().equals("ok"))
+                            {
+                                System.out.println("-------------------------------------------------");
+
+                                System.out.println(response.get("Message"));
+
+                                System.out.println("\nUpdated balance: " + response.get("Updated Balance"));
+
+                                System.out.println("-------------------------------------------------");
+                            } else
+                            {
+                                System.out.println("-------------------------------------------------");
+
+                                System.out.println(response.get("Message"));
+
+                                System.out.println("-------------------------------------------------");
+                            }
+                        } catch (Exception exception)
+                        {
+                            exception.printStackTrace();
+                        }
+                    }
+                    case 2 ->
+                    // deposit
+                    {
+                        try
+                        {
+                            var request = new JSONObject();
+
+                            request.put("Operation", "deposit");
+
+                            System.out.print("Enter amount: ");
+
+                            var value = "";
+                            while ((value = reader.readLine()).isBlank()
+                                    || !Pattern.matches("\\d+",value))
+                            {
+                                System.out.print("Please enter proper amount: ");
+                            }
+
+                            request.put("Amount", value);
+
+                            request.put("AccountID", accountID);
+
+                            socket.send(request.toString());
+
+                            var response = new JSONObject(new String(socket.recv()));
+
+                            System.out.println("-------------------------------------------------");
+
                             System.out.println(response.get("Message"));
 
-                            System.out.println("Updated balance: "+response.get("Updated Balance"));
-                        }
-                        else
+                            System.out.println("\nUpdated Balance: " + response.get("Updated Balance"));
+
+                            System.out.println("-------------------------------------------------");
+
+                        } catch (Exception exception)
                         {
-                            System.out.println(response.get("Message"));
+                            exception.printStackTrace();
                         }
                     }
-
-                    break;
-                    case 2:
-                        // deposit
+                    case 3 ->
+                    // check balance
                     {
-                        var request = new JSONObject();
+                        try
+                        {
+                            var request = this.getBalance(accountID);
 
-                        request.put("Operation", "deposit");
+                            //send request to server...
+                            socket.send(request.toString());
 
-                        System.out.print("Enter amount: ");
+                            // response from server...
+                            var response = new JSONObject(new String(socket.recv()));
 
-                        request.put("Amount", reader.readLine());
+                            System.out.println("-------------------------------------------------");
 
-                        request.put("AccountID", accountID);
+                            System.out.println("Current Balance: " + response.get("Balance"));
 
-                        socket.send(request.toString());
+                            System.out.println("-------------------------------------------------");
 
-                        var response = new JSONObject(new String(socket.recv()));
-
-                        System.out.println(response.get("Message"));
-
-                        System.out.println("Updated Balance: "+response.get("Updated Balance"));
+                        } catch (Exception exception)
+                        {
+                            exception.printStackTrace();
+                        }
                     }
-                        break;
-                    case 3:
-                        // check balance
+                    case 4 ->
+                    // transfer
                     {
-                        var request = this.getBalance(accountID);
+                        try
+                        {
+                            var request = new JSONObject();
 
-                        //send request to server...
-                        socket.send(request.toString());
+                            System.out.print("Enter recipient Account Number: ");
 
-                        // response from server...
-                        var response = new JSONObject(new String(socket.recv()));
+                            var value = "";
+                            while ((value = reader.readLine()).isBlank()
+                                    || !Pattern.matches("\\d{5}",value))
+                            {
+                                System.out.print("Please enter proper account number: ");
+                            }
 
-                        System.out.println("Current Balance: "+response.get("Balance"));
+                            request.put("Operation", "Transfer");
+
+                            request.put("Recipient AccountID", value);
+
+                            request.put("AccountID", accountID);
+
+                            System.out.print("Enter amount to transfer: ");
+
+                            while ((value = reader.readLine()).isBlank()
+                                    || !Pattern.matches("\\d+",value))
+                            {
+                                System.out.print("Please enter proper amount: ");
+                            }
+
+                            request.put("Amount", value);
+
+                            // send transfer request to server
+                            socket.send(request.toString());
+
+                            var response = new JSONObject(new String(socket.recv()));
+
+                            if (response.get("Status").toString().equals("ok"))
+                            {
+                                System.out.println("-------------------------------------------------");
+
+                                System.out.println(response.get("Message"));
+
+                                System.out.println("\nUpdated Balance: " + response.get("Updated Balance"));
+
+                                System.out.println("-------------------------------------------------");
+                            } else
+                            {
+                                System.out.println("-------------------------------------------------");
+
+                                System.out.println(response.get("Message"));
+
+                                System.out.println("-------------------------------------------------");
+                            }
+                        } catch (Exception exception)
+                        {
+                            exception.printStackTrace();
+                        }
                     }
-                    break;
-
-                    case 4:
-                        // transfer
-                    {
-                        var request = new JSONObject();
-
-                        System.out.print("Enter recipient Account Number: ");
-
-                        request.put("Operation", "Transfer");
-
-                        request.put("Recipient AccountID", reader.readLine());
-
-                        request.put("AccountID", accountID);
-
-                        System.out.print("Enter amount to transfer: ");
-
-                        request.put("Amount", reader.readLine());
-
-                        // send transfer request to server
-                        socket.send(request.toString());
-
-                        var response = new JSONObject(new String(socket.recv()));
-                    }
-                        break;
-                    default:
-                        System.out.println("Invalid choice ");
+                    default -> System.out.println("Invalid choice ");
                 }
             }
-        }
-        catch (Exception exception)
+        } catch (Exception exception)
         {
-            System.out.println("Exception: "+exception);
-
             exception.printStackTrace();
         }
     }

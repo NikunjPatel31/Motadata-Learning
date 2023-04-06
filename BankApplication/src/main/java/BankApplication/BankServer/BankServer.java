@@ -23,7 +23,7 @@ public class BankServer
         reader = new BufferedReader(new InputStreamReader(System.in));
     }
 
-    public static void start()
+    public static void start() throws Exception
     {
         BankServer server = new BankServer();
 
@@ -33,209 +33,319 @@ public class BankServer
 
             while (!Thread.currentThread().isInterrupted())
             {
-                //var reqStr = new String(socket.recv());
-
                 JSONObject request = new JSONObject(new String(socket.recv()));
 
                 switch (request.get("Operation").toString())
                 {
                     case "login":
                     {
-                        JSONObject response = null;
+                        JSONObject response = new JSONObject();
 
-                        if (server.bankDB.checkCredential(Integer.parseInt(request.get("CustomerID").toString()),
-                                request.get("Password").toString()))
+                        try
                         {
-                            // login successfully
-
-                            response = new JSONObject();
-
-                            var customer = server.bankDB.getCustomer(Integer.parseInt(request.get("CustomerID").toString()));
-
-                            if (customer != null)
+                            if (server.bankDB.checkCredential(Integer.parseInt(request.get("CustomerID").toString()),
+                                    request.get("Password").toString()))
                             {
-                                response.put("CustomerID", customer.getCustomerID());
+                                // login successfully
+                                var customer = server.bankDB.getCustomer(Integer.parseInt(request.get("CustomerID").toString()));
 
-                                response.put("Message", "Login successful");
+                                if (customer != null)
+                                {
+                                    response.put("CustomerID", customer.getCustomerID());
 
-                                response.put("AccountID", customer.getAccountID());
+                                    response.put("Message", "Login successful");
 
-                                response.put("Status","ok");
+                                    response.put("AccountID", customer.getAccountID());
+
+                                    response.put("Status","ok");
+                                }
+                                else {
+                                    // error
+                                    // show appropriate message
+
+                                    response.clear();
+
+                                    response.put("Message", "Error in login");
+
+                                    response.put("Status", "error");
+                                }
+
                             }
-                            else {
-                                // error
-                                // show appropriate message
+                            else
+                            {
+                                // credential are wrong
+                                response.clear();
 
-                                response.put("Message", "Error in login");
+                                response.put("Message", "Invalid credentials");
 
                                 response.put("Status", "error");
                             }
-
-                            socket.send(response.toString());
-
-                        } else
+                        }
+                        catch (Exception exception)
                         {
-                            // credential are wrong
+                            exception.printStackTrace();
+
+                            response.clear();
+
+                            response.put("Message", "Error in login");
+
+                            response.put("Status", "error");
+                        }
+                        finally
+                        {
+                            socket.send(response.toString());
                         }
                     }
                     break;
                     case "createCustomer":
-
-                        Customer customer = new Customer();
-
                     {
-                        customer.setName(request.get("Name").toString());
-
-                        customer.setEmail(request.get("Email").toString());
-
-                        customer.setContact(Long.parseLong(request.get("Contact").toString()));
-
-                        customer.setAddress(request.get("Address").toString());
-
-                        customer.setPassword(request.get("Password").toString());
-
-                        customer.setCustomerID();
-
-                        System.out.println("Customer: " + customer);
-
-                        server.bankDB.addCustomer(customer);
+                        Customer customer = new Customer();
 
                         JSONObject response = new JSONObject();
 
-                        response.put("Message", "Customer added successfully");
+                        try
+                        {
+                            customer.setName(request.get("Name").toString().trim());
 
-                        response.put("CustomerID", customer.getCustomerID());
+                            customer.setEmail(request.get("Email").toString().trim());
 
-                        socket.send(response.toString());
+                            customer.setContact(Long.parseLong(request.get("Contact").toString().trim()));
+
+                            customer.setAddress(request.get("Address").toString().trim());
+
+                            customer.setPassword(request.get("Password").toString().trim());
+
+                            customer.setCustomerID();
+
+                            // adding customer to db
+                            server.bankDB.addCustomer(customer);
+
+                            response.put("Message", "Customer added successfully");
+
+                            response.put("CustomerID", customer.getCustomerID());
+
+                            response.put("Status", "ok");
+                        }
+                        catch (Exception exception)
+                        {
+                            exception.printStackTrace();
+
+                            response.clear();
+
+                            response.put("Message", "Error in registering new customer");
+
+                            response.put("Status", "error");
+                        }
+                        finally
+                        {
+                            socket.send(response.toString());
+                        }
 
                     }
                     break;
                     case "createAccount":
-
                     {
-                        System.out.println("Value: " + request.get("balance"));
-
-                        Saving saving = new Saving();
-
-                        saving.setBalance(Long.parseLong(request.get("balance").toString()));
-
-                        saving.setCustomerID(Integer.parseInt(request.get("CustomerID").toString()));
-
-                        saving.setAccountID();
-
-                        server.bankDB.addAccount(saving);
-
-                        server.bankDB.getCustomer(Integer.parseInt(request.get("CustomerID").toString()))
-                                        .setAccountID(saving.getAccountNumber());
-
-                        System.out.println("Account: " + saving);
-
                         JSONObject response = new JSONObject();
 
-                        response.put("Message", "Account created successfully");
+                        try
+                        {
+                            Saving saving = new Saving();
 
-                        response.put("AccountID", saving.getAccountNumber());
+                            saving.setBalance(Long.parseLong(request.get("balance").toString()));
 
-                        socket.send(response.toString());
+                            saving.setCustomerID(Integer.parseInt(request.get("CustomerID").toString()));
 
-                        System.out.println("Response send: " + response);
+                            saving.setAccountID();
+
+                            // adding new account to db
+                            server.bankDB.addAccount(saving);
+
+                            // adding account number to customer entry in db
+                            server.bankDB.getCustomer(Integer.parseInt(request.get("CustomerID").toString()))
+                                    .setAccountID(saving.getAccountNumber());
+
+                            response.put("Message", "Account created successfully");
+
+                            response.put("AccountID", saving.getAccountNumber());
+
+                            response.put("Status", "ok");
+
+                        }
+                        catch (Exception exception)
+                        {
+                            exception.printStackTrace();
+
+                            response.clear();
+
+                            response.put("Message", "Error in creating new account");
+
+                            response.put("Status", "error");
+                        }
+                        finally
+                        {
+                            socket.send(response.toString());
+                        }
                     }
                         break;
-
                     case "check balance":
                     {
-                        var currentBalance = server.bankDB.getBalance(Long.parseLong(request.get("AccountID").toString()));
-
                         JSONObject response = new JSONObject();
-
-                        if (currentBalance == -1)
+                        try
                         {
-                            // error
+                            var currentBalance = server.bankDB.getBalance(Long.parseLong(request.get("AccountID").toString()));
+
+                            if (currentBalance == -1)
+                            {
+                                // error
+                                response.put("Status", "error");
+
+                                System.out.println("AccountID: "+request.get("AccountID"));
+                            }
+                            else {
+                                response.put("Status", "ok");
+
+                                response.put("Balance", currentBalance);
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            System.out.println("Error in checking balance");
+
+                            response.clear();
+
                             response.put("Status", "error");
 
-                            System.out.println("AccountID: "+request.get("AccountID"));
+                            response.put("Message", "Error in checking balance");
                         }
-                        else {
-                            response.put("Status", "ok");
-
-                            response.put("Balance", currentBalance);
+                        finally
+                        {
+                            socket.send(response.toString());
                         }
-
-                        socket.send(response.toString());
                     }
                         break;
-
                     case "withdraw":
                     {
-                        var updatedBal = server.bankDB.getAccount(Long.parseLong(request.get("AccountID").toString()))
-                                .withdraw(Long.parseLong(request.get("Amount").toString()));
-
                         var response = new JSONObject();
-
-                        if (updatedBal == -1)
+                        try
                         {
-                            // insufficient balance
-                            response.put("Status","error");
+                            var updatedBal = server.bankDB.getAccount(Long.parseLong(request.get("AccountID").toString()))
+                                    .withdraw(Long.parseLong(request.get("Amount").toString()));
 
-                            response.put("Message", "Insufficient Balance");
+                            if (updatedBal == -1)
+                            {
+                                // insufficient balance
+                                response.put("Status","error");
+
+                                response.put("Message", "Insufficient Balance");
+                            }
+                            else
+                            {
+                                response.put("Status", "ok");
+
+                                response.put("Message", "Account withdraw complete");
+
+                                response.put("Updated Balance", updatedBal);
+                            }
                         }
-                        else
+                        catch (Exception exception)
                         {
-                            response.put("Status", "ok");
+                            System.out.println("Error in withdraw amount");
 
-                            response.put("Message", "Account withdraw complete");
+                            response.clear();
 
-                            response.put("Updated Balance", updatedBal);
+                            response.put("Status", "error");
+
+                            response.put("Message", "Error in withdraw");
                         }
-
-                        socket.send(response.toString());
+                        finally
+                        {
+                            socket.send(response.toString());
+                        }
                     }
                         break;
-
                     case "deposit":
                     {
-                        var updatedBal = server.bankDB.getAccount(Long.parseLong(request.get("AccountID").toString()))
-                                .deposit(Long.parseLong(request.get("Amount").toString()));
-
                         var response = new JSONObject();
-
-                        response.put("Status", "ok");
-
-                        response.put("Message","Deposit completed");
-
-                        response.put("Updated Balance", updatedBal);
-
-                        socket.send(response.toString());
-
-                    }
-                        break;
-
-                    case "Transfer":
-                    {
-                        var updatedBal = server.bankDB.getAccount(Long.parseLong(request.get("AccountID").toString()))
-                                .withdraw(Long.parseLong(request.get("Amount").toString()));
-
-                        var response = new JSONObject();
-
-                        if (updatedBal != -1)
+                        try
                         {
-                            server.bankDB.getAccount(Long.parseLong(request.get("Recipient AccountID").toString()))
+                            var updatedBal = server.bankDB.getAccount(Long.parseLong(request.get("AccountID").toString()))
                                     .deposit(Long.parseLong(request.get("Amount").toString()));
 
                             response.put("Status", "ok");
 
-                            response.put("Message", "Transfer completed");
+                            response.put("Message","Deposit completed");
 
                             response.put("Updated Balance", updatedBal);
                         }
-                        else
+                        catch (Exception exception)
                         {
+                            System.out.println("Error in depositing");
+
+                            response.clear();
+
                             response.put("Status", "error");
 
-                            response.put("Message", "Transfer not completed, insufficient balance");
+                            response.put("Message", "Error in depositing");
                         }
+                        finally
+                        {
+                            socket.send(response.toString());
+                        }
+                    }
+                        break;
+                    case "Transfer":
+                    {
+                        var response = new JSONObject();
 
-                        socket.send(response.toString());
+                        try
+                        {
+                            var updatedBal = server.bankDB.getAccount(Long.parseLong(request.get("AccountID").toString()))
+                                    .withdraw(Long.parseLong(request.get("Amount").toString()));
+
+                            if (updatedBal != -1)
+                            {
+                                try
+                                {
+                                    server.bankDB.getAccount(Long.parseLong(request.get("Recipient AccountID").toString()))
+                                            .deposit(Long.parseLong(request.get("Amount").toString()));
+
+                                    response.put("Status", "ok");
+
+                                    response.put("Message", "Transfer completed");
+
+                                    response.put("Updated Balance", updatedBal);
+                                }
+                                catch (Exception exception)
+                                {
+                                    System.out.println(exception.getMessage());
+
+                                    response.put("Status", "error");
+
+                                    response.put("Message", exception.getMessage());
+                                }
+
+                            }
+                            else
+                            {
+                                response.put("Status", "error");
+
+                                response.put("Message", "Transfer not completed, insufficient balance");
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            System.out.println("Error in transferring");
+
+                            response.clear();
+
+                            response.put("Status", "error");
+
+                            response.put("Message", "Error in transferring");
+                        }
+                        finally
+                        {
+                            socket.send(response.toString());
+                        }
                     }
                         break;
                     default:
@@ -245,7 +355,7 @@ public class BankServer
 
         } catch (Exception exception)
         {
-            System.out.println("Exception: " + exception);
+            System.out.println("Some error occurred...");
 
             exception.printStackTrace();
         }

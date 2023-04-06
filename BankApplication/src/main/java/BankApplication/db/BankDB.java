@@ -82,9 +82,12 @@ public class BankDB
         return -1;
     }
 
-    public Account getAccount(long accountID)
+    public Account getAccount(long accountID) throws Exception
     {
-        return accountMap.get(accountID);
+        if (accountMap.containsKey(accountID))
+            return accountMap.get(accountID);
+
+        throw new Exception("Account does not exists");
     }
 
 }

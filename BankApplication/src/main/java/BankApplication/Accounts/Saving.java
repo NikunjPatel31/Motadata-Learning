@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Saving implements Account
 {
-    private static AtomicLong accountNumber;
+    private static long accountNumber;
     float interestRate;
     long minReqBalance = 2000;
     long minWithdrawLimit;
@@ -17,7 +17,7 @@ public class Saving implements Account
 
     static
     {
-        accountNumber = new AtomicLong();
+        accountNumber = 10000;
     }
 
     public Saving()
@@ -69,7 +69,7 @@ public class Saving implements Account
 
     private long incrementAccountIDCount()
     {
-        return this.accountNumber.incrementAndGet();
+        return ++accountNumber;
     }
 
     public void setAccountID()
@@ -104,15 +104,4 @@ public class Saving implements Account
         return balance += amount;
     }
 
-    @Override
-    public synchronized long transfer(long recipientAccID, long amount)
-    {
-        var updatedBal = withdraw(amount);
-
-        if (updatedBal != -1)
-        {
-
-        }
-        return -1;
-    }
 }

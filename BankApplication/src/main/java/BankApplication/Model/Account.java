@@ -21,4 +21,6 @@ public interface Account
     public long withdraw(long amount);
 
     public long deposit(long amount);
+
+    public long transfer(long recipientAccID, long amount);
 }

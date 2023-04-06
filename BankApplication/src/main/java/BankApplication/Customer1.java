@@ -272,13 +272,15 @@ public class Customer1
 
                 System.out.println("3. Check Balance");
 
-                System.out.println("4. Exit");
+                System.out.println("4. Transfer");
+
+                System.out.println("5. Exit");
 
                 System.out.print("Choice: ");
 
                 int operation = Integer.parseInt(reader.readLine());
 
-                if (operation == 4) break;
+                if (operation == 5) break;
 
                 switch (operation)
                 {
@@ -350,6 +352,30 @@ public class Customer1
                         System.out.println("Current Balance: "+response.get("Balance"));
                     }
                     break;
+
+                    case 4:
+                        // transfer
+                    {
+                        var request = new JSONObject();
+
+                        System.out.print("Enter recipient Account Number: ");
+
+                        request.put("Operation", "Transfer");
+
+                        request.put("Recipient AccountID", reader.readLine());
+
+                        request.put("AccountID", accountID);
+
+                        System.out.print("Enter amount to transfer: ");
+
+                        request.put("Amount", reader.readLine());
+
+                        // send transfer request to server
+                        socket.send(request.toString());
+
+                        var response = new JSONObject(new String(socket.recv()));
+                    }
+                        break;
                     default:
                         System.out.println("Invalid choice ");
                 }

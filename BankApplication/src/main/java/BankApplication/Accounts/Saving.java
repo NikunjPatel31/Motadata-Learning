@@ -103,4 +103,16 @@ public class Saving implements Account
     {
         return balance += amount;
     }
+
+    @Override
+    public synchronized long transfer(long recipientAccID, long amount)
+    {
+        var updatedBal = withdraw(amount);
+
+        if (updatedBal != -1)
+        {
+
+        }
+        return -1;
+    }
 }

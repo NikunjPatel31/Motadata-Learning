@@ -210,6 +210,34 @@ public class BankServer
                     }
                         break;
 
+                    case "Transfer":
+                    {
+                        var updatedBal = server.bankDB.getAccount(Long.parseLong(request.get("AccountID").toString()))
+                                .withdraw(Long.parseLong(request.get("Amount").toString()));
+
+                        var response = new JSONObject();
+
+                        if (updatedBal != -1)
+                        {
+                            server.bankDB.getAccount(Long.parseLong(request.get("Recipient AccountID").toString()))
+                                    .deposit(Long.parseLong(request.get("Amount").toString()));
+
+                            response.put("Status", "ok");
+
+                            response.put("Message", "Transfer completed");
+
+                            response.put("Updated Balance", updatedBal);
+                        }
+                        else
+                        {
+                            response.put("Status", "error");
+
+                            response.put("Message", "Transfer not completed, insufficient balance");
+                        }
+
+                        socket.send(response.toString());
+                    }
+                        break;
                     default:
                         System.out.println("Invalid request");
                 }

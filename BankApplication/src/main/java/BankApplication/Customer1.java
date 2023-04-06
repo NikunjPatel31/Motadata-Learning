@@ -43,8 +43,8 @@ public class Customer1
 
                     switch (choice)
                     {
-                        case 1:
-                            // login...
+                        case 1 ->
+                        // login...
                         {
                             JSONObject request = customer1.login();
 
@@ -67,67 +67,18 @@ public class Customer1
                             {
                                 System.out.println("Login successful");
 
-                                while (true)
-                                {
-                                    System.out.println("Select Operation: ");
-
-                                    System.out.println("1. Withdraw");
-
-                                    System.out.println("2. Deposit");
-
-                                    System.out.println("3. Check Balance");
-
-                                    System.out.println("4. Exit");
-
-                                    System.out.print("Choice: ");
-
-                                    int operation = Integer.parseInt(reader.readLine());
-
-                                    if (operation == 4) break;
-
-                                    switch (operation)
-                                    {
-                                        case 1:
-                                            // withdraw
-                                            break;
-                                        case 2:
-                                            // deposit
-                                            break;
-                                        case 3:
-                                            // check balance
-
-                                            request = customer1.getBalance(accountID);
-
-                                            //send request to server...
-                                            socket.send(request.toString());
-
-                                            // response from server...
-                                            response = new JSONObject(new String(socket.recv()));
-
-                                            System.out.println("Current Balance: "+response.get("Balance"));
-
-                                            break;
-                                        default:
-                                            System.out.println("Invalid choice ");
-                                    }
-                                }
-                            }
-                            else
+                                customer1.options(socket, accountID);
+                            } else
                             {
                                 System.out.println("Login failed");
                             }
                         }
-
-                        break;
-                        case 2:
+                        case 2 ->
+                        {
                             // create account...
-
                             JSONObject customer = customer1.getUserDetails();
-
                             if (customer != null)
                             {
-                                // socket.send("createCustomer");
-
                                 socket.send(customer.toString());
 
                                 JSONObject response = new JSONObject(new String(socket.recv()));
@@ -147,62 +98,14 @@ public class Customer1
 
                                 System.out.println(response.get("Message"));
 
+                                customer1.options(socket, accountID);
+
                             } else
                             {
                                 // exception thrown...
                             }
-
-                            if (customer != null)
-                            {
-                                while (true)
-                                {
-                                    System.out.println("Select Operation: ");
-
-                                    System.out.println("1. Withdraw");
-
-                                    System.out.println("2. Deposit");
-
-                                    System.out.println("3. Check Balance");
-
-                                    System.out.println("4. Exit");
-
-                                    System.out.print("Choice: ");
-
-                                    int operation = Integer.parseInt(reader.readLine());
-
-                                    if (operation == 4) break;
-
-                                    switch (operation)
-                                    {
-                                        case 1:
-                                            // withdraw
-                                            break;
-                                        case 2:
-                                            // deposit
-                                            break;
-                                        case 3:
-                                            // check balance
-
-                                            var request = customer1.getBalance(accountID);
-
-                                            //send request to server...
-                                            socket.send(request.toString());
-
-                                            // response from server...
-                                            var response = new JSONObject(new String(socket.recv()));
-
-                                            System.out.println("Current Balance: "+response.get("Balance"));
-
-                                            break;
-                                        default:
-                                            System.out.println("Invalid choice ");
-                                    }
-                                }
-                            }
-
-                            break;
-                        default:
-                            System.out.println("Invalid choice");
+                        }
+                        default -> System.out.println("Invalid choice");
                     }
                 } catch (Exception exception)
                 {
@@ -353,5 +256,110 @@ public class Customer1
         }
 
         return null;
+    }
+
+    public void options(ZMQ.Socket socket, long accountID)
+    {
+        try
+        {
+            while (true)
+            {
+                System.out.println("Select Operation: ");
+
+                System.out.println("1. Withdraw");
+
+                System.out.println("2. Deposit");
+
+                System.out.println("3. Check Balance");
+
+                System.out.println("4. Exit");
+
+                System.out.print("Choice: ");
+
+                int operation = Integer.parseInt(reader.readLine());
+
+                if (operation == 4) break;
+
+                switch (operation)
+                {
+                    case 1:
+                        // withdraw
+                    {
+                        var request = new JSONObject();
+
+                        System.out.print("Enter amount: ");
+
+                        request.put("Operation", "withdraw");
+
+                        request.put("Amount", reader.readLine());
+
+                        request.put("AccountID", accountID);
+
+                        // send request...
+                        socket.send(request.toString());
+
+                        // response from server
+                        var response = new JSONObject(new String(socket.recv()));
+
+                        if (response.get("Status").toString().equals("ok"))
+                        {
+                            System.out.println(response.get("Message"));
+
+                            System.out.println("Updated balance: "+response.get("Updated Balance"));
+                        }
+                        else
+                        {
+                            System.out.println(response.get("Message"));
+                        }
+                    }
+
+                    break;
+                    case 2:
+                        // deposit
+                    {
+                        var request = new JSONObject();
+
+                        request.put("Operation", "deposit");
+
+                        System.out.print("Enter amount: ");
+
+                        request.put("Amount", reader.readLine());
+
+                        request.put("AccountID", accountID);
+
+                        socket.send(request.toString());
+
+                        var response = new JSONObject(new String(socket.recv()));
+
+                        System.out.println(response.get("Message"));
+
+                        System.out.println("Updated Balance: "+response.get("Updated Balance"));
+                    }
+                        break;
+                    case 3:
+                        // check balance
+                    {
+                        var request = this.getBalance(accountID);
+
+                        //send request to server...
+                        socket.send(request.toString());
+
+                        // response from server...
+                        var response = new JSONObject(new String(socket.recv()));
+
+                        System.out.println("Current Balance: "+response.get("Balance"));
+                    }
+                    break;
+                    default:
+                        System.out.println("Invalid choice ");
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            System.out.println("Exception: "+exception);
+
+            exception.printStackTrace();
+        }
     }
 }

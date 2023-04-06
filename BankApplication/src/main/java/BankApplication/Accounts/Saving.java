@@ -8,7 +8,7 @@ public class Saving implements Account
 {
     private static AtomicLong accountNumber;
     float interestRate;
-    long minReqBalance;
+    long minReqBalance = 2000;
     long minWithdrawLimit;
     long balance;
     int customerID;
@@ -80,8 +80,27 @@ public class Saving implements Account
     @Override
     public String toString()
     {
-        return "Balance: "+balance+
-                "AccountID: "+accountID+
-                "CustomerID: "+customerID;
+        return "Balance: " + balance +
+                ", AccountID: " + accountID +
+                ", CustomerID: " + customerID;
+    }
+
+    @Override
+    public synchronized long withdraw(long amount)
+    {
+        if ((balance - amount) >= minReqBalance)
+        {
+            balance -= amount;
+
+            return balance;
+        }
+
+        return -1;
+    }
+
+    @Override
+    public synchronized long deposit(long amount)
+    {
+        return balance += amount;
     }
 }

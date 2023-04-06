@@ -71,8 +71,6 @@ public class BankDB
     {
         try
         {
-            System.out.println("..............");
-            System.out.println(accountMap);
             return accountMap.get(accountID).getBalance();
         }
         catch (Exception exception)
@@ -82,6 +80,11 @@ public class BankDB
             exception.printStackTrace();
         }
         return -1;
+    }
+
+    public Account getAccount(long accountID)
+    {
+        return accountMap.get(accountID);
     }
 
 }

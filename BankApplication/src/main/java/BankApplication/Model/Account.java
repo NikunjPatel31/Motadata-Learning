@@ -17,4 +17,8 @@ public interface Account
     public long getMaxWithDrawAmount();
 
     public long getAccountNumber();
+
+    public long withdraw(long amount);
+
+    public long deposit(long amount);
 }

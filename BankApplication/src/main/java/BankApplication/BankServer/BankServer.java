@@ -141,6 +141,7 @@ public class BankServer
                         System.out.println("Response send: " + response);
                     }
                         break;
+
                     case "check balance":
                     {
                         var currentBalance = server.bankDB.getBalance(Long.parseLong(request.get("AccountID").toString()));
@@ -163,6 +164,52 @@ public class BankServer
                         socket.send(response.toString());
                     }
                         break;
+
+                    case "withdraw":
+                    {
+                        var updatedBal = server.bankDB.getAccount(Long.parseLong(request.get("AccountID").toString()))
+                                .withdraw(Long.parseLong(request.get("Amount").toString()));
+
+                        var response = new JSONObject();
+
+                        if (updatedBal == -1)
+                        {
+                            // insufficient balance
+                            response.put("Status","error");
+
+                            response.put("Message", "Insufficient Balance");
+                        }
+                        else
+                        {
+                            response.put("Status", "ok");
+
+                            response.put("Message", "Account withdraw complete");
+
+                            response.put("Updated Balance", updatedBal);
+                        }
+
+                        socket.send(response.toString());
+                    }
+                        break;
+
+                    case "deposit":
+                    {
+                        var updatedBal = server.bankDB.getAccount(Long.parseLong(request.get("AccountID").toString()))
+                                .deposit(Long.parseLong(request.get("Amount").toString()));
+
+                        var response = new JSONObject();
+
+                        response.put("Status", "ok");
+
+                        response.put("Message","Deposit completed");
+
+                        response.put("Updated Balance", updatedBal);
+
+                        socket.send(response.toString());
+
+                    }
+                        break;
+
                     default:
                         System.out.println("Invalid request");
                 }

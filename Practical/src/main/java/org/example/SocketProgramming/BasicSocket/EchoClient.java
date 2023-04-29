@@ -15,9 +15,6 @@ public class EchoClient {
 
             socket.connect(new InetSocketAddress("localhost", 5555));
 
-
-//            socket.bind(new InetSocketAddress(5559));
-
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
             System.out.println("Enter a message: ");

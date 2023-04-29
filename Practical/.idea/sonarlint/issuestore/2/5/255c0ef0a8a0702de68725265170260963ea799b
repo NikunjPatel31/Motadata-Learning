@@ -1,10 +1,0 @@
-
-{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ññ¾Àşÿÿÿÿ8®¯ë¸ô0
-i
-java:S2095"GUse try-with-resources or close this "Statement" in a "finally" clause.(é°Áµşÿÿÿÿ8µ¯ë¸ô0
-W
-java:S1854":Remove this useless assignment to local variable "select".(Š¤¡ú8·¯ë¸ô0
-H
-java:S1481"+Remove this unused "select" local variable.(Š¤¡ú8¹¯ë¸ô0
-Z	java:S106 "9Replace this use of System.out or System.err by a logger.(ÎŸúÿÿÿÿ8¹¯ë¸ô0
-U	java:S106'"9Replace this use of System.out or System.err by a logger.(ÀœëÆ8¹¯ë¸ô0

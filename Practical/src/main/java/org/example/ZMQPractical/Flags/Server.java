@@ -16,7 +16,7 @@ public class Server {
 
             while (!Thread.currentThread().isInterrupted())
             {
-                socket.send("heey");
+                socket.send("heey", ZMQ.NOBLOCK);
             }
 
             System.out.println("Message sent");

@@ -7,13 +7,12 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Saving implements Account
 {
     private static long accountNumber;
-    float interestRate;
-    long minReqBalance = 2000;
-    long minWithdrawLimit;
-    long balance;
-    int customerID;
+    private float interestRate;
+    private long  minReqBalance = 2000;
+    private long balance;
+    private int customerID;
 
-    long accountID;
+    private long accountID;
 
     static
     {
@@ -53,12 +52,6 @@ public class Saving implements Account
     public long getMinReqBalance()
     {
         return this.minReqBalance;
-    }
-
-    @Override
-    public long getMaxWithDrawAmount()
-    {
-        return this.minWithdrawLimit;
     }
 
     @Override

@@ -11,33 +11,38 @@ public class Server
     {
         ServerSocket serverSocket = new ServerSocket(Constant.PORT_NUMBER);
 
-        Socket socket = serverSocket.accept();
-
-        System.out.println("We are ready for the communication");
-
-        try
+        while (true)
         {
-
-            ReadMessage readMessage = new ReadMessage(socket, Constant.SERVER);
-
-            WriteMessage writeMessage = new WriteMessage(socket, Constant.SERVER);
-
-            readMessage.start();
-
-            writeMessage.start();
-
-            readMessage.join();
-
-            writeMessage.join();
-
+            System.out.println(Thread.currentThread().getThreadGroup());
         }
-        catch (Exception exception)
-        {
-            System.out.println("Exception: "+exception);
-        }
-        finally
-        {
-            socket.close();
-        }
+
+//        Socket socket = serverSocket.accept();
+//
+//        System.out.println("We are ready for the communication");
+//
+//        try
+//        {
+//
+//            ReadMessage readMessage = new ReadMessage(socket, Constant.SERVER);
+//
+//            WriteMessage writeMessage = new WriteMessage(socket, Constant.SERVER);
+//
+//            readMessage.start();
+//
+//            writeMessage.start();
+//
+//            readMessage.join();
+//
+//            writeMessage.join();
+//
+//        }
+//        catch (Exception exception)
+//        {
+//            System.out.println("Exception: "+exception);
+//        }
+//        finally
+//        {
+//            socket.close();
+//        }
     }
 }

@@ -22,6 +22,10 @@ public class Server {
 
             socket.send("Hey client, your message is received.");
 
+            socket.send("Heelo");
+
+            socket.send("hellllo");
+
 //            while (!Thread.currentThread().isInterrupted())
 //            {
 //                byte[] receivedByte = socket.recv(0);

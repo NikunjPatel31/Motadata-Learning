@@ -4,7 +4,10 @@ import BankApplication.Model.Account;
 import BankApplication.Model.Customer;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class BankDB
@@ -13,11 +16,15 @@ public class BankDB
 
     Map<Long, Account> accountMap;
 
+    Set<Integer> activeAccMap;
+
     public BankDB()
     {
         customerMap = new HashMap<>();
 
         accountMap = new HashMap<>();
+
+        activeAccMap = new HashSet<>();
     }
 
     public BankDB(Map<Integer, Customer> customerMap, Map<Long, Account> accountMap)
@@ -90,4 +97,18 @@ public class BankDB
         throw new Exception("Account does not exists");
     }
 
+    public boolean isAccountActive(int customeID)
+    {
+        return activeAccMap.contains(customeID);
+    }
+
+    public void addActiveAccount(int customerID)
+    {
+        activeAccMap.add(customerID);
+    }
+
+    public boolean removeActiveAcc(int customerID)
+    {
+        return activeAccMap.remove(customerID);
+    }
 }

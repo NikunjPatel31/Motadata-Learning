@@ -29,7 +29,7 @@ public class BankServer
 
         try (ZContext context = new ZContext(); ZMQ.Socket socket = context.createSocket(SocketType.REP))
         {
-            socket.bind("tcp://*:6001");
+            socket.bind("tcp://10.20.40.197:6001");
 
             while (!Thread.currentThread().isInterrupted())
             {
@@ -43,42 +43,54 @@ public class BankServer
 
                         try
                         {
-                            if (server.bankDB.checkCredential(Integer.parseInt(request.get("CustomerID").toString()),
-                                    request.get("Password").toString()))
+                            if (server.bankDB.isAccountActive(Integer.parseInt(request.get("CustomerID").toString())))
                             {
-                                // login successfully
-                                var customer = server.bankDB.getCustomer(Integer.parseInt(request.get("CustomerID").toString()));
+                                response.put("Status", "error");
 
-                                if (customer != null)
-                                {
-                                    response.put("CustomerID", customer.getCustomerID());
-
-                                    response.put("Message", "Login successful");
-
-                                    response.put("AccountID", customer.getAccountID());
-
-                                    response.put("Status","ok");
-                                }
-                                else {
-                                    // error
-                                    // show appropriate message
-
-                                    response.clear();
-
-                                    response.put("Message", "Error in login");
-
-                                    response.put("Status", "error");
-                                }
-
+                                response.put("Message", "User already logged in");
                             }
                             else
                             {
-                                // credential are wrong
-                                response.clear();
+                                System.out.println("Val: "+server.bankDB.isAccountActive(Integer.parseInt(request.get("CustomerID").toString())));
+                                if (server.bankDB.checkCredential(Integer.parseInt(request.get("CustomerID").toString()),
+                                        request.get("Password").toString()))
+                                {
+                                    // login successfully
+                                    var customer = server.bankDB.getCustomer(Integer.parseInt(request.get("CustomerID").toString()));
 
-                                response.put("Message", "Invalid credentials");
+                                    if (customer != null)
+                                    {
+                                        server.bankDB.addActiveAccount(customer.getCustomerID());
 
-                                response.put("Status", "error");
+                                        response.put("CustomerID", customer.getCustomerID());
+
+                                        response.put("Message", "Login successful");
+
+                                        response.put("AccountID", customer.getAccountID());
+
+                                        response.put("Status","ok");
+                                    }
+                                    else {
+                                        // error
+                                        // show appropriate message
+
+                                        response.clear();
+
+                                        response.put("Message", "Error in login");
+
+                                        response.put("Status", "error");
+                                    }
+
+                                }
+                                else
+                                {
+                                    // credential are wrong
+                                    response.clear();
+
+                                    response.put("Message", "Invalid credentials");
+
+                                    response.put("Status", "error");
+                                }
                             }
                         }
                         catch (Exception exception)
@@ -96,7 +108,7 @@ public class BankServer
                             socket.send(response.toString());
                         }
                     }
-                    break;
+                        break;
                     case "createCustomer":
                     {
                         Customer customer = new Customer();
@@ -142,7 +154,7 @@ public class BankServer
                         }
 
                     }
-                    break;
+                        break;
                     case "createAccount":
                     {
                         JSONObject response = new JSONObject();
@@ -348,12 +360,44 @@ public class BankServer
                         }
                     }
                         break;
+                    case "logout":
+                    {
+                        var response = new JSONObject();
+
+                        try
+                        {
+                            if (server.bankDB.removeActiveAcc(Integer.parseInt(request.get("CustomerID").toString())))
+                            {
+                                response.put("Status", "ok");
+
+                                response.put("Message", "Log out complete");
+                            }
+                            else
+                            {
+                                response.put("Status", "error");
+
+                                response.put("Message", "Error in logging out");
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            response.put("Status", "error");
+
+                            response.put("Message", "Error in logging out");
+                        }
+                        finally
+                        {
+                            socket.send(response.toString());
+                        }
+                    }
+                    break;
                     default:
                         System.out.println("Invalid request");
                 }
             }
 
-        } catch (Exception exception)
+        }
+        catch (Exception exception)
         {
             System.out.println("Some error occurred...");
 

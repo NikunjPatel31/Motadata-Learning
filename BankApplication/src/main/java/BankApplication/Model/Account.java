@@ -1,7 +1,5 @@
 package BankApplication.Model;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 public interface Account
 {
     public long getBalance();
@@ -13,8 +11,6 @@ public interface Account
     public void setCustomerID(int customerID);
 
     public long getMinReqBalance();
-
-    public long getMaxWithDrawAmount();
 
     public long getAccountNumber();
 

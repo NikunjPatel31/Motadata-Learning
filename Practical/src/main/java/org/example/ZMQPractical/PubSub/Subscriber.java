@@ -18,7 +18,7 @@ public class Subscriber {
             socket.connect("tcp://localhost:7000");
 
             System.out.println("waiting for response...");
-            socket.subscribe("");
+//            socket.subscribe("");
 
             Thread.sleep(5000);
 
@@ -31,6 +31,8 @@ public class Subscriber {
                 byte[] receivedBytes = socket.recv();
 
                 System.out.println("Publisher: "+ new String(receivedBytes));
+
+                System.out.println("My name is dhaval");
             }
         }
         catch (Exception exception)

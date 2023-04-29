@@ -16,7 +16,7 @@ public class Client {
         try {
             context = new ZContext();
 
-            socket = context.createSocket(SocketType.REP);
+            socket = context.createSocket(SocketType.REQ);
 
             var isConnected = socket.connect("tcp://localhost:5555");
 
